@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+{% block body %}
+<div class="row">
+    <div class="center-block col-lg-7" style="float: none;">
+    <h2>Skynetcom - мы заботимся и о мелочах</h2>
+        <form action="" method="post" role="form">
+            {% csrf_token %}
+            {{ form.as_table }}
+            <button type="submit" class="btn btn-sm btn-primary">Войти</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
