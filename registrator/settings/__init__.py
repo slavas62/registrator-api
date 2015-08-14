@@ -26,9 +26,12 @@ APPS = [
 USERLAYERS_APPS = [
     'mutant',
     'mutant.contrib.boolean',
-    'mutant.contrib.numeric',
-    'mutant.contrib.text',
+    'mutant.contrib.file',
     'mutant.contrib.geo',
+    'mutant.contrib.numeric',
+    'mutant.contrib.related',
+    'mutant.contrib.text',
+    'mutant.contrib.web',
     'userlayers',
 ]
 
@@ -113,9 +116,9 @@ SUIT_CONFIG = {
     'SHOW_REQUIRED_ASTERISK': True,
     'MENU_OPEN_FIRST_CHILD': True,
     'MENU': [
-        {'label': u'Пользователи', 'icon':'icon-user', 'models': ('acc.user', 'auth.group')},
-        'main',
-        'mutant',
+        {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('acc.user', 'auth.group')},
+        {'label': u'Объекты', 'icon': 'icon-flag', 'app': 'ul_1'},
+        {'label': u'Мутант', 'icon': 'icon-book', 'app': 'mutant'},
     ]
 }
 
