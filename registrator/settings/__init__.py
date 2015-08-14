@@ -32,27 +32,17 @@ USERLAYERS_APPS = [
     'userlayers',
 ]
 
-INSTALLED_APPS = [
+INSTALLED_APPS = APPS + [
     'south',
     'suit',
     'django.contrib.gis',
-    'django.contrib.contenttypes',
     'django.contrib.admin',
+    'django.contrib.contenttypes',
     'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-] + APPS + USERLAYERS_APPS
-
-
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+] + USERLAYERS_APPS
 
 ROOT_URLCONF = 'main.urls'
 
@@ -77,18 +67,39 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
 
 MEDIA_URL = '/m/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-ADMIN_MEDIA_PREFIX = STATIC_URL + "admin/"
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 AUTH_USER_MODEL = 'acc.User'
 LOGIN_URL = '/acc/login'
 LOGOUT_URL = '/acc/logout'
 LOGIN_REDIRECT_URL = '/'
+
+MIDDLEWARE_CLASSES = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+TEMPLATE_LOADERS = [
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+]
+
+TEMPLATE_CONTEXT_PROCESSORS = [
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
+]
 
 # TASTYPIE SETTINGS
 TASTYPIE_DEFAULT_FORMATS = ['json']
@@ -97,7 +108,15 @@ API_LIMIT_PER_PAGE = 100
 
 SUIT_CONFIG = {
     'SEARCH_URL': '',
-    'ADMIN_NAME': 'REGISTRATOR API'
+    'ADMIN_NAME': 'REGISTRATOR API',
+    'LIST_PER_PAGE': 50,
+    'SHOW_REQUIRED_ASTERISK': True,
+    'MENU_OPEN_FIRST_CHILD': True,
+    'MENU': [
+        {'label': u'Пользователи', 'icon':'icon-user', 'models': ('acc.user', 'auth.group')},
+        'main',
+        'mutant',
+    ]
 }
 
 DEBUG_TOOLBAR_CONFIG = {

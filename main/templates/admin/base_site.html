@@ -1,12 +1,16 @@
 {% extends "admin/base.html" %}
 {% load admin_static %}
 {% block blockbots %}
-    <meta name="robots" content="NONE,NOARCHIVE" />
-    <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+{% endblock %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}"/>
 {% endblock %}
 
 {% block branding %}
-    REGISTRATOR API
+    <div><img src="{% static 'img/logo.png' %}" alt=""/></div>
+    <div>API</div>
 {% endblock %}
 
 {% block footer %}
