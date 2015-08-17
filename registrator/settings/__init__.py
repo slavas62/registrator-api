@@ -30,6 +30,7 @@ USERLAYERS_APPS = [
     'mutant.contrib.geo',
     'mutant.contrib.numeric',
     'mutant.contrib.related',
+    'mutant.contrib.temporal',
     'mutant.contrib.text',
     'mutant.contrib.web',
     'userlayers',
@@ -114,7 +115,6 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'REGISTRATOR API',
     'LIST_PER_PAGE': 50,
     'SHOW_REQUIRED_ASTERISK': True,
-    'MENU_OPEN_FIRST_CHILD': True,
     'MENU': [
         {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('acc.user', 'auth.group')},
         {'label': u'Объекты', 'icon': 'icon-flag', 'app': 'ul_1'},

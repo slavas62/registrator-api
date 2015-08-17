@@ -50,6 +50,7 @@ class GroupForm(forms.ModelForm):
             'permissions': admin.widgets.FilteredSelectMultiple("permissions", is_stacked=False),
         }
 
+
 class GroupAdmin(BaseGroupAdmin):
     form = GroupForm
 
