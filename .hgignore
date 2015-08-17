@@ -1,0 +1,9 @@
+syntax: glob
+.project
+.idea
+.pydevproject
+*.pyc
+.settings/*
+*.egg-info
+api/config.py
+registrator/config.py

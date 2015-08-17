@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load admin_static %}
+{% block blockbots %}
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+{% endblock %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}"/>
+{% endblock %}
+
+{% block branding %}
+    <div><img src="{% static 'img/logo.png' %}" alt=""/></div>
+    <div>API</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
