@@ -1,0 +1,1 @@
+./manage.py db_dump --router=default $1
