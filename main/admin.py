@@ -78,9 +78,13 @@ class ModelDefinitionAdmin(admin.ModelAdmin):
 admin.site.register(mutant_models.ModelDefinition, ModelDefinitionAdmin)
 
 
+class FieldAdmin(admin.ModelAdmin):
+    save_as = True
+
+
 for field_type in dict(FIELD_TYPES).values():
     attrs = {'model': field_type}
-    FieldDefAdmin = type('{0}Admin'.format(field_type.__name__), (admin.ModelAdmin,), attrs)
+    FieldDefAdmin = type('{0}Admin'.format(field_type.__name__), (FieldAdmin,), attrs)
     admin.site.register(field_type, FieldDefAdmin)
 
 
