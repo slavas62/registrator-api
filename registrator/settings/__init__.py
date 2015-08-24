@@ -19,7 +19,7 @@ ALLOWED_HOSTS = ['*']
 
 
 APPS = [
-    'acc',
+    # 'acc',
     'main'
 ]
 
@@ -76,7 +76,7 @@ MEDIA_URL = '/m/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
-AUTH_USER_MODEL = 'acc.User'
+# AUTH_USER_MODEL = 'acc.User'
 LOGIN_URL = '/acc/login'
 LOGOUT_URL = '/acc/logout'
 LOGIN_REDIRECT_URL = '/'

@@ -4,7 +4,6 @@ from django.db import models as django_models, ProgrammingError
 from django import forms as django_forms
 from mutant import models as mutant_models
 from userlayers.api.forms import FIELD_TYPES
-from userlayers.models import UserToTable
 
 
 def admin_modeldefinition_load():
@@ -67,13 +66,6 @@ class ModelDefinitionAdmin(admin.ModelAdmin):
                     django_models.AutoField, django_models.ManyToOneRel, django_models.OneToOneField))
                     and f.name not in self.exclude]
             }]]
-
-    def save_model(self, request, obj, form, change):
-        super(ModelDefinitionAdmin, self).save_model(request, obj, form, change)
-        if obj.pk:
-            obj.model_class(force_create=True)
-        else:
-            UserToTable(md=obj, user=request.user).save()
 
 admin.site.register(mutant_models.ModelDefinition, ModelDefinitionAdmin)
 
