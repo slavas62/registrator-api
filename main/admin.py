@@ -39,18 +39,16 @@ class ModelDefinitionFormAdmin(django_forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        if 'initial' not in kwargs:
-            kwargs['initial'] = {}
-        kwargs['initial'].update({'app_label': 'ul_1'})
         super(ModelDefinitionFormAdmin, self).__init__(*args, **kwargs)
-        self.fields['app_label'].widget.attrs['readonly'] = True
+        self.fields['verbose_name'].required = True
+        self.fields['verbose_name_plural'].required = True
 
 
 class ModelDefinitionAdmin(admin.ModelAdmin):
     model = mutant_models.ModelDefinition
     form = ModelDefinitionFormAdmin
     inlines = [FieldDefinitionInlineAdmin]
-    exclude = ['managed']
+    exclude = ['managed', 'app_label']
     suit_form_tabs = [
         ['general', u'Тип'],
         ['fields', u'Поля'],
