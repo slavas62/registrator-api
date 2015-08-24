@@ -4,6 +4,7 @@ from django.db import models as django_models, ProgrammingError
 from django import forms as django_forms
 from mutant import models as mutant_models
 from userlayers.api.forms import FIELD_TYPES
+from userlayers.api.naming import translit_and_slugify, get_app_label_for_user, get_db_table_name
 
 
 def admin_modeldefinition_load():
@@ -23,11 +24,19 @@ def admin_modeldefinition_load():
 class FieldDefinitionInlineAdmin(admin.TabularInline):
     model = mutant_models.FieldDefinition
     fk_name = 'model_def'
-    extra = 0
     suit_classes = 'suit-tab suit-tab-fields'
 
     def get_readonly_fields(self, request, obj=None):
         return [f.name for f in self.model._meta.fields]
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
 
 
 class ModelDefinitionFormAdmin(django_forms.ModelForm):
@@ -49,6 +58,7 @@ class ModelDefinitionAdmin(admin.ModelAdmin):
     form = ModelDefinitionFormAdmin
     inlines = [FieldDefinitionInlineAdmin]
     exclude = ['managed', 'app_label']
+    readonly_fields = ['db_table']
     suit_form_tabs = [
         ['general', u'Тип'],
         ['fields', u'Поля'],
@@ -64,6 +74,19 @@ class ModelDefinitionAdmin(admin.ModelAdmin):
                     django_models.AutoField, django_models.ManyToOneRel, django_models.OneToOneField))
                     and f.name not in self.exclude]
             }]]
+
+    def save_model(self, request, obj, form, change):
+        slug = translit_and_slugify(obj.name)
+        obj.name = slug[:100]
+        obj.owner = request.user
+        obj.verbose_name = obj.name
+        obj.app_label = get_app_label_for_user(request.user)[:100]
+        obj.db_table = get_db_table_name(request.user, obj.name)[:63]
+        obj.model = slug[:100]
+        obj.object_name = slug[:255]
+        if obj.pk:
+            obj.model_class(force_create=True)
+        return super(ModelDefinitionAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(mutant_models.ModelDefinition, ModelDefinitionAdmin)
 
