@@ -5,20 +5,7 @@ from django import forms as django_forms
 from mutant import models as mutant_models
 from userlayers.api.forms import FIELD_TYPES
 from userlayers.api.naming import translit_and_slugify, get_app_label_for_user, get_db_table_name
-
-
-def admin_modeldefinition_load():
-    try:
-        for o in mutant_models.ModelDefinition.objects.all():
-            class ModelDefinitionClassAdmin(admin.ModelAdmin):
-                pass
-            try:
-                admin.site.unregister(o.model_class())
-            except:
-                pass
-            admin.site.register(o.model_class(), ModelDefinitionClassAdmin)
-    except ProgrammingError as e:
-        pass
+from userlayers.models import ModelDefinition
 
 
 class FieldDefinitionInlineAdmin(admin.TabularInline):
@@ -41,7 +28,7 @@ class FieldDefinitionInlineAdmin(admin.TabularInline):
 
 class ModelDefinitionFormAdmin(django_forms.ModelForm):
     class Meta:
-        model = mutant_models.ModelDefinition
+        model = ModelDefinition
         widgets = {
             'verbose_name': django_forms.TextInput(),
             'verbose_name_plural': django_forms.TextInput(),
@@ -54,7 +41,7 @@ class ModelDefinitionFormAdmin(django_forms.ModelForm):
 
 
 class ModelDefinitionAdmin(admin.ModelAdmin):
-    model = mutant_models.ModelDefinition
+    model = ModelDefinition
     form = ModelDefinitionFormAdmin
     inlines = [FieldDefinitionInlineAdmin]
     exclude = ['managed', 'app_label']
@@ -99,6 +86,20 @@ for field_type in dict(FIELD_TYPES).values():
     attrs = {'model': field_type}
     FieldDefAdmin = type('{0}Admin'.format(field_type.__name__), (FieldAdmin,), attrs)
     admin.site.register(field_type, FieldDefAdmin)
+
+
+def admin_modeldefinition_load():
+    try:
+        for o in mutant_models.ModelDefinition.objects.all():
+            class ModelDefinitionClassAdmin(admin.ModelAdmin):
+                pass
+            try:
+                admin.site.unregister(o.model_class())
+            except:
+                pass
+            admin.site.register(o.model_class(), ModelDefinitionClassAdmin)
+    except ProgrammingError as e:
+        pass
 
 
 admin_modeldefinition_load()
