@@ -1,4 +1,4 @@
-gdal==1.11.2
+gdal=>1.10
 psycopg2==2.6.1
 colorlog
 #https://github.com/charettes/django-mutant/archive/migrations.zip
