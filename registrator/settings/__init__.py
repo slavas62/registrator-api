@@ -20,7 +20,7 @@ ALLOWED_HOSTS = ['*']
 
 APPS = [
     # 'acc',
-    'main'
+    'main',
 ]
 
 USERLAYERS_APPS = [
@@ -115,11 +115,13 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'REGISTRATOR API',
     'LIST_PER_PAGE': 50,
     'SHOW_REQUIRED_ASTERISK': True,
-    'MENU': [
-        {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('acc.user', 'auth.group')},
-        {'label': u'Объекты', 'icon': 'icon-flag', 'app': 'ul_1'},
-        {'label': u'Мутант', 'icon': 'icon-book', 'app': 'mutant'},
-    ]
+    # 'MENU': [
+    #     {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('auth.user', 'auth.group')},
+    #     {'label': u'Модели', 'icon': 'icon-blackboard', 'app': 'userlayers'},
+    #     {'label': u'Поля', 'icon': 'icon-book', 'app': 'mutant'},
+    #     {'label': u'Объекты', 'icon': 'icon-hdd', 'models': []},
+    # ],
+    # 'MENU_USERLAYERS_MODELS': 3
 }
 
 DEBUG_TOOLBAR_CONFIG = {

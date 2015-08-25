@@ -10,7 +10,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^secret_admin_zone/', include(admin.site.urls)),
-    url(r'^acc/', include('acc.urls')),
+    # url(r'^acc/', include('acc.urls')),
     url(r'^userlayers/', include('userlayers.urls')),
 ]
 

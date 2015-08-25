@@ -1,11 +1,12 @@
 # coding: utf-8
 from django.contrib import admin
+from django.contrib.admin.sites import AlreadyRegistered
 from django.db import models as django_models, ProgrammingError
 from django import forms as django_forms
 from mutant import models as mutant_models
 from userlayers.api.forms import FIELD_TYPES
-from userlayers.api.naming import translit_and_slugify, get_app_label_for_user, get_db_table_name
 from userlayers.models import ModelDefinition
+from suit.config import settings
 
 
 class FieldDefinitionInlineAdmin(admin.TabularInline):
@@ -34,48 +35,24 @@ class ModelDefinitionFormAdmin(django_forms.ModelForm):
             'verbose_name_plural': django_forms.TextInput(),
         }
 
-    def __init__(self, *args, **kwargs):
-        super(ModelDefinitionFormAdmin, self).__init__(*args, **kwargs)
-        self.fields['verbose_name'].required = True
-        self.fields['verbose_name_plural'].required = True
-
 
 class ModelDefinitionAdmin(admin.ModelAdmin):
     model = ModelDefinition
     form = ModelDefinitionFormAdmin
     inlines = [FieldDefinitionInlineAdmin]
-    exclude = ['managed', 'app_label']
-    readonly_fields = ['db_table']
+    fieldsets = [[
+        None,
+        {
+            'classes': ['suit-tab', 'suit-tab-general'],
+            'fields': ['owner', 'name', 'verbose_name', 'verbose_name_plural']
+        }
+    ]]
     suit_form_tabs = [
         ['general', u'Тип'],
         ['fields', u'Поля'],
     ]
 
-    def __init__(self, model, admin_site):
-        super(ModelDefinitionAdmin, self).__init__(model, admin_site)
-        self.fieldsets = [[
-            None,
-            {
-                'classes': ('suit-tab', 'suit-tab-general',),
-                'fields': [f.name for f in self.opts.fields if not isinstance(f, (
-                    django_models.AutoField, django_models.ManyToOneRel, django_models.OneToOneField))
-                    and f.name not in self.exclude]
-            }]]
-
-    def save_model(self, request, obj, form, change):
-        slug = translit_and_slugify(obj.name)
-        obj.name = slug[:100]
-        obj.owner = request.user
-        obj.verbose_name = obj.name
-        obj.app_label = get_app_label_for_user(request.user)[:100]
-        obj.db_table = get_db_table_name(request.user, obj.name)[:63]
-        obj.model = slug[:100]
-        obj.object_name = slug[:255]
-        if obj.pk:
-            obj.model_class(force_create=True)
-        return super(ModelDefinitionAdmin, self).save_model(request, obj, form, change)
-
-admin.site.register(mutant_models.ModelDefinition, ModelDefinitionAdmin)
+admin.site.register(ModelDefinition, ModelDefinitionAdmin)
 
 
 class FieldAdmin(admin.ModelAdmin):
@@ -88,18 +65,27 @@ for field_type in dict(FIELD_TYPES).values():
     admin.site.register(field_type, FieldDefAdmin)
 
 
-def admin_modeldefinition_load():
-    try:
-        for o in mutant_models.ModelDefinition.objects.all():
-            class ModelDefinitionClassAdmin(admin.ModelAdmin):
-                pass
-            try:
-                admin.site.unregister(o.model_class())
-            except:
-                pass
-            admin.site.register(o.model_class(), ModelDefinitionClassAdmin)
-    except ProgrammingError as e:
-        pass
+def admin_modeldefinition_unload():
+    menu = []
+    for o in ModelDefinition.objects.all():
+        # for m in settings.SUIT_CONFIG['MENU'][settings.SUIT_CONFIG['MENU_USERLAYERS_MODELS']]['models']:
+        #     if m['model'] != unicode(o):
+        #         menu.append(m)
+        try:
+            admin.site.unregister(o.model_class())
+        except:
+            pass
 
+
+def admin_modeldefinition_load():
+    class ModelDefinitionClassAdmin(admin.ModelAdmin):
+        pass
+    for o in ModelDefinition.objects.all():
+        try:
+            admin.site.register(o.model_class(), ModelDefinitionClassAdmin)
+            # settings.SUIT_CONFIG['MENU'][settings.SUIT_CONFIG['MENU_USERLAYERS_MODELS']]['models'].append(
+            #     {'label': '%s %s' % (o.app_label.upper(), o.verbose_name.capitalize()), 'model': unicode(o)})
+        except AlreadyRegistered as e:
+            pass
 
 admin_modeldefinition_load()
