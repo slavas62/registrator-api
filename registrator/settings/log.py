@@ -84,9 +84,19 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': ['stdout'],
-            'level': 'ERROR',
+            'handlers': ['logfile'],
+            'level': 'WARNING',
             'propagate': True,
+        },
+        'django': {
+            'handlers': ['logfile'],
+            'propagate': True,
+            'level': 'WARNING',
+        },
+        'django.db.backends': {
+            'handlers': ['logfile'],
+            'propagate': True,
+            'level': 'WARNING',
         },
         'console': {
             'handlers': ['cmd'],
@@ -97,11 +107,6 @@ LOGGING = {
             'handlers': ['cmd_no_level'],
             'level': 'DEBUG',
             'propagate': True,
-        },
-        'django': {
-            'handlers': ['logfile'],
-            'propagate': True,
-            'level': 'INFO',
         },
         'db_color_no_level': {
             'handlers': ['db_color_no_level'],
