@@ -7,3 +7,4 @@ syntax: glob
 *.egg-info
 api/config.py
 registrator/config.py
+userlayers
