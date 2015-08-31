@@ -50,7 +50,7 @@ INSTALLED_APPS = APPS + [
 
 ROOT_URLCONF = 'main.urls'
 
-WSGI_APPLICATION = 'registrator.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 LANGUAGE_CODE = 'ru-RU'
