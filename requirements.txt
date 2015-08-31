@@ -1,4 +1,4 @@
-gdal>=1.10
+GDAL==1.10.0
 psycopg2==2.6.1
 colorlog
 #https://github.com/charettes/django-mutant/archive/migrations.zip
@@ -10,3 +10,5 @@ django-class-based-auth-views==0.3
 django-suit==0.2.14
 django==1.6.9
 gunicorn
+dj-database-url==0.3.0
+

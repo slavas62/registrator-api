@@ -2,8 +2,10 @@
 
 import os
 import sys
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ENV_DIR = os.path.join(os.path.dirname(sys.executable), '..')
 LOG_DIR = os.path.join(BASE_DIR, '..', '..', '.log')
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
@@ -66,14 +68,14 @@ USE_TZ = False
 FIRST_DAY_OF_WEEK = 1
 
 STATIC_URL = '/s/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_prepared')
+STATIC_ROOT = os.path.join(ENV_DIR, 'www', 'static')
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
 MEDIA_URL = '/m/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(ENV_DIR, 'www', 'media')
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # AUTH_USER_MODEL = 'acc.User'
@@ -128,18 +130,7 @@ DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': ''
 }
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'registrator_api',
-        'HOST': '127.0.0.1',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
-        'PORT': '5432',
-    },
-}
-
+DATABASES = {'default': dj_database_url.config(default='postgres://')}
 
 try:
     from registrator.config import *
