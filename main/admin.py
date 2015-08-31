@@ -66,26 +66,20 @@ for field_type in dict(FIELD_TYPES).values():
 
 
 def admin_modeldefinition_unload():
-    menu = []
-    for o in ModelDefinition.objects.all():
-        # for m in settings.SUIT_CONFIG['MENU'][settings.SUIT_CONFIG['MENU_USERLAYERS_MODELS']]['models']:
-        #     if m['model'] != unicode(o):
-        #         menu.append(m)
-        try:
+    try:
+        for o in ModelDefinition.objects.all():
             admin.site.unregister(o.model_class())
-        except:
-            pass
+    except:
+        pass
 
 
 def admin_modeldefinition_load():
     class ModelDefinitionClassAdmin(admin.ModelAdmin):
         pass
-    for o in ModelDefinition.objects.all():
-        try:
+    try:
+        for o in ModelDefinition.objects.all():
             admin.site.register(o.model_class(), ModelDefinitionClassAdmin)
-            # settings.SUIT_CONFIG['MENU'][settings.SUIT_CONFIG['MENU_USERLAYERS_MODELS']]['models'].append(
-            #     {'label': '%s %s' % (o.app_label.upper(), o.verbose_name.capitalize()), 'model': unicode(o)})
-        except AlreadyRegistered as e:
-            pass
+    except:
+        pass
 
 admin_modeldefinition_load()
