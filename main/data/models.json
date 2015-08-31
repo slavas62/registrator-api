@@ -1,0 +1,468 @@
+{
+  "fragment_rkt": {
+    "owner_id": 1,
+    "verbose_name": "фрагмент РКТ",
+    "verbose_name_plural": "фрагменты РКТ",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "название"
+        }
+      },
+      "area": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "территория"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "комментарий"
+        }
+      },
+      "location": {
+        "type": "point",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "size": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "габаритные размеры"
+        }
+      },
+      "ident": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "идентификация фрагмента"
+        }
+      }
+    }
+  },
+  "fire": {
+    "owner_id": 1,
+    "verbose_name": "пожар",
+    "verbose_name_plural": "пожары",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "название"
+        }
+      },
+      "area": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "территория"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "комментарий"
+        }
+      },
+      "location": {
+        "type": "point",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "object": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "объект возгорания"
+        }
+      }
+    }
+  },
+  "crash": {
+    "owner_id": 1,
+    "verbose_name": "авария",
+    "verbose_name_plural": "аварии",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "название"
+        }
+      },
+      "area": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "территория"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "комментарий"
+        }
+      },
+      "location": {
+        "type": "point",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "type_rkt": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "тип РКТ"
+        }
+      },
+      "datetime": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "дата пуска"
+        }
+      }
+    }
+  },
+  "monitoring_env": {
+    "owner_id": 1,
+    "verbose_name": "мониторинг ОС",
+    "verbose_name_plural": "мониторинги ОС",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "название"
+        }
+      },
+      "area": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "территория"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "комментарий"
+        }
+      },
+      "location": {
+        "type": "point",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "point_num": {
+        "type": "integer",
+        "args": {
+          "null": false,
+          "blank": false,
+          "verbose_name": "номер точки"
+        }
+      },
+      "weather": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": true,
+          "blank": true,
+          "verbose_name": "погодные условия"
+        }
+      },
+      "results": {
+        "type": "text",
+        "args": {
+          "null": false,
+          "blank": false,
+          "verbose_name": "результаты наблюдений"
+        }
+      }
+    }
+  },
+  "sample": {
+    "owner_id": 1,
+    "verbose_name": "проба",
+    "verbose_name_plural": "пробы",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "название"
+        }
+      },
+      "area": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "территория"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "комментарий"
+        }
+      },
+      "location": {
+        "type": "point",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "point_num": {
+        "type": "integer",
+        "args": {
+          "null": false,
+          "blank": false,
+          "verbose_name": "номер точки"
+        }
+      },
+      "landscape": {
+        "type": "text",
+        "args": {
+          "null": false,
+          "blank": false,
+          "verbose_name": "описание ландшафта"
+        }
+      },
+      "purpose": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": true,
+          "blank": true,
+          "verbose_name": "назначение"
+        }
+      }
+    }
+  },
+  "other": {
+    "owner_id": 1,
+    "verbose_name": "прочее",
+    "verbose_name_plural": "прочее",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "название"
+        }
+      },
+      "area": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "территория"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "комментарий"
+        }
+      },
+      "location": {
+        "type": "point",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      }
+    }
+  }
+}
