@@ -14,6 +14,7 @@ urlpatterns = [
     # url(r'^acc/', include('acc.urls')),
     url(r'^userlayers/', include('userlayers.urls')),
     url(r'^login/', 'main.views.login_view', name='login'),
+    url(r'^logout/', 'main.views.logout_view', name='logout'),
 ]
 
 if settings.DEBUG:
