@@ -6,7 +6,6 @@ hg+ssh://hg@bitbucket.org/atlantij/userlayers/@custom_modeldefinition
 #hg+ssh://hg@bitbucket.org/atlantij/userlayers/
 django-debug-toolbar==1.3.2
 django-extensions==1.5.5
-django-class-based-auth-views==0.3
 django-suit==0.2.14
 django==1.6.9
 gunicorn

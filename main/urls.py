@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^secret_admin_zone/', include(admin.site.urls)),
     # url(r'^acc/', include('acc.urls')),
     url(r'^userlayers/', include('userlayers.urls')),
+    url(r'^login/', 'main.views.login_view', name='login'),
 ]
 
 if settings.DEBUG:
