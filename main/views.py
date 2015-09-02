@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -14,7 +14,7 @@ def login_view(request, *args, **kwargs):
             return HttpResponse('')
         else:
             return HttpResponseForbidden('')
-    return HttpResponse('')
+    return HttpResponseBadRequest('')
 
 
 @csrf_exempt
