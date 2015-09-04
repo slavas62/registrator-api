@@ -77,8 +77,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # AUTH_USER_MODEL = 'acc.User'
-LOGIN_URL = '/login'
-LOGOUT_URL = '/logout'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE_CLASSES = [
