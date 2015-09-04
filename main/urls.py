@@ -5,11 +5,13 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import RedirectView
+from main.views import TokenGetView
 
 admin.autodiscover()
 
 urlpatterns = [
     url('^$', RedirectView.as_view(url='/secret_admin_zone', permanent=False)),
+    url(r'^get-token/$', TokenGetView.as_view(), name='token-get'),
     url(r'^secret_admin_zone/', include(admin.site.urls)),
     # url(r'^acc/', include('acc.urls')),
     url(r'^userlayers/', include('userlayers.urls')),

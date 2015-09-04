@@ -30,7 +30,7 @@
           "verbose_name": "комментарий"
         }
       },
-      "location": {
+      "geometry": {
         "type": "point",
         "args": {
           "null": true,
@@ -110,7 +110,7 @@
           "verbose_name": "комментарий"
         }
       },
-      "location": {
+      "geometry": {
         "type": "point",
         "args": {
           "null": true,
@@ -181,7 +181,7 @@
           "verbose_name": "комментарий"
         }
       },
-      "location": {
+      "geometry": {
         "type": "point",
         "args": {
           "null": true,
@@ -260,7 +260,7 @@
           "verbose_name": "комментарий"
         }
       },
-      "location": {
+      "geometry": {
         "type": "point",
         "args": {
           "null": true,
@@ -347,7 +347,7 @@
           "verbose_name": "комментарий"
         }
       },
-      "location": {
+      "geometry": {
         "type": "point",
         "args": {
           "null": true,
@@ -434,7 +434,7 @@
           "verbose_name": "комментарий"
         }
       },
-      "location": {
+      "geometry": {
         "type": "point",
         "args": {
           "null": true,
