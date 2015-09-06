@@ -115,13 +115,12 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'REGISTRATOR API',
     'LIST_PER_PAGE': 50,
     'SHOW_REQUIRED_ASTERISK': True,
-    # 'MENU': [
-    #     {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('auth.user', 'auth.group')},
-    #     {'label': u'Модели', 'icon': 'icon-blackboard', 'app': 'userlayers'},
-    #     {'label': u'Поля', 'icon': 'icon-book', 'app': 'mutant'},
-    #     {'label': u'Объекты', 'icon': 'icon-hdd', 'models': []},
-    # ],
-    # 'MENU_USERLAYERS_MODELS': 3
+    'MENU': [
+        {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('auth.user', 'auth.group')},
+        {'label': u'Объекты', 'icon': 'icon-hdd', 'app': 'objects'},
+        {'label': u'Модели', 'icon': 'icon-book', 'app': 'userlayers'},
+        {'label': u'Поля', 'icon': 'icon-list', 'app': 'mutant'},
+    ],
 }
 
 DEBUG_TOOLBAR_CONFIG = {

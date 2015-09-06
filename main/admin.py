@@ -1,16 +1,14 @@
 # coding: utf-8
+from copy import deepcopy
+import mutant
 from django.contrib import admin
-from django.contrib.admin.sites import AlreadyRegistered
-from django.db import models as django_models, ProgrammingError
 from django import forms as django_forms
-from mutant import models as mutant_models
-from userlayers.api.forms import FIELD_TYPES
+from userlayers.api.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
 from userlayers.models import ModelDefinition
-from suit.config import settings
 
 
 class FieldDefinitionInlineAdmin(admin.TabularInline):
-    model = mutant_models.FieldDefinition
+    model = mutant.models.FieldDefinition
     fk_name = 'model_def'
     suit_classes = 'suit-tab suit-tab-fields'
 
@@ -28,6 +26,10 @@ class FieldDefinitionInlineAdmin(admin.TabularInline):
 
 
 class ModelDefinitionFormAdmin(django_forms.ModelForm):
+    # geometry_field = django_forms.CharField(
+    #     widget=django_forms.Select(
+    #         choices=[(_, _) for _ in dict(GEOMETRY_FIELD_TYPES).keys()]), label=u'Геометрия по умолчанию')
+
     class Meta:
         model = ModelDefinition
         widgets = {
@@ -44,7 +46,9 @@ class ModelDefinitionAdmin(admin.ModelAdmin):
         None,
         {
             'classes': ['suit-tab', 'suit-tab-general'],
-            'fields': ['owner', 'name', 'verbose_name', 'verbose_name_plural']
+            'fields': ['name', 'owner',
+                       # 'geometry_field',
+                       'verbose_name', 'verbose_name_plural']
         }
     ]]
     suit_form_tabs = [
@@ -55,31 +59,42 @@ class ModelDefinitionAdmin(admin.ModelAdmin):
 admin.site.register(ModelDefinition, ModelDefinitionAdmin)
 
 
-class FieldAdmin(admin.ModelAdmin):
-    save_as = True
+class ModelDefinitionAdminBuilder(object):
+    class AdminClass(admin.ModelAdmin):
+        form = ModelDefinitionFormAdmin
 
+    class FieldAdmin(admin.ModelAdmin):
+        exclude = ['editable', 'db_column', 'primary_key']
+        save_as = True
 
-for field_type in dict(FIELD_TYPES).values():
-    attrs = {'model': field_type}
-    FieldDefAdmin = type('{0}Admin'.format(field_type.__name__), (FieldAdmin,), attrs)
-    admin.site.register(field_type, FieldDefAdmin)
+    def __init__(self):
+        for field_type in dict(FIELD_TYPES).values():
+            attrs = {'model': field_type}
+            o = type('{0}Admin'.format(field_type.__name__), (self.FieldAdmin,), attrs)
+            admin.site.register(field_type, o)
 
+    def build(self):
+        registry = {}
+        for m, a in admin.site._registry.items():
+            if issubclass(a.__class__, self.AdminClass):
+                continue
+            registry[m] = a
+        admin.site._registry = registry
+        for o in self.get_models():
+            c = o.model_class()
+            cc = deepcopy(c)
+            cc._meta.app_label = 'objects'
+            admin.site.register(cc, self.get_admin_class(o))
 
-def admin_modeldefinition_unload():
-    try:
-        for o in ModelDefinition.objects.all():
-            admin.site.unregister(o.model_class())
-    except:
-        pass
+    @classmethod
+    def get_models(cls):
+        return ModelDefinition.objects.all()
 
+    @classmethod
+    def get_admin_class(cls, o):
+        class Alass(cls.AdminClass):
+            fields = [f.name for f in o.fielddefinitions.order_by('pk')]
+        return Alass
 
-def admin_modeldefinition_load():
-    class ModelDefinitionClassAdmin(admin.ModelAdmin):
-        pass
-    try:
-        for o in ModelDefinition.objects.all():
-            admin.site.register(o.model_class(), ModelDefinitionClassAdmin)
-    except:
-        pass
-
-admin_modeldefinition_load()
+builder = ModelDefinitionAdminBuilder()
+builder.build()
