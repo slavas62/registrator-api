@@ -89,6 +89,14 @@ class ModelDefinitionAdminBuilder(object):
         exclude = ['editable', 'db_column', 'primary_key']
         save_as = True
 
+        def has_change_permission(self, request, obj=None):
+            if obj and obj.name == DEFAULT_MD_GEOMETRY_FIELD_NAME:
+                return False
+            return True
+
+        def has_delete_permission(self, request, obj=None):
+            return self.has_change_permission(request, obj)
+
     def __init__(self):
         for field_type in dict(FIELD_TYPES).values():
             attrs = {'model': field_type}
