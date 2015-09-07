@@ -140,7 +140,8 @@ class ModelDefinitionAdminBuilder(object):
     @classmethod
     def get_admin_class(cls, o):
         class Alass(cls.AdminClass):
-            fields = [f.name for f in o.fielddefinitions.order_by('pk')]
+            fields = [f.name for f in o.fielddefinitions.select_subclasses().order_by('pk')
+                      if not hasattr(f, 'auto_now_add') or not f.auto_now_add]
 
         return Alass
 
