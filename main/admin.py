@@ -14,12 +14,10 @@ class FieldDefinitionInlineAdmin(admin.TabularInline):
     model = FieldDefinition
     fk_name = 'model_def'
     suit_classes = 'suit-tab suit-tab-fields'
+    fields = ['id', 'content_type', 'name', 'null', 'blank']
 
     def get_readonly_fields(self, request, obj=None):
         return [f.name for f in self.model._meta.fields]
-
-    def has_change_permission(self, request, obj=None):
-        return False
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -55,7 +53,6 @@ class ModelDefinitionFormAdmin(forms.ModelForm):
 class ModelDefinitionAdmin(admin.ModelAdmin):
     model = ModelDefinition
     form = ModelDefinitionFormAdmin
-
     inlines = [FieldDefinitionInlineAdmin]
     fieldsets = [[
         None,
