@@ -38,8 +38,9 @@ class ModelDefinitionFormAdmin(forms.ModelForm):
             'verbose_name_plural': forms.TextInput(),
         }
 
-    def __init__(self, instance=None, *args, **kwargs):
-        super(ModelDefinitionFormAdmin, self).__init__(instance=instance, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(ModelDefinitionFormAdmin, self).__init__(*args, **kwargs)
+        instance = kwargs.get('instance', None)
         if instance:
             try:
                 geomentry_field = instance.fielddefinitions.select_subclasses().get(name=DEFAULT_MD_GEOMETRY_FIELD_NAME)
@@ -81,7 +82,7 @@ admin.site.register(ModelDefinition, ModelDefinitionAdmin)
 
 class ModelDefinitionAdminBuilder(object):
     class AdminClass(admin.ModelAdmin):
-        form = ModelDefinitionFormAdmin
+        pass
 
     class FieldAdmin(admin.ModelAdmin):
         exclude = ['editable', 'db_column', 'primary_key']
@@ -139,7 +140,6 @@ class ModelDefinitionAdminBuilder(object):
         class Alass(cls.AdminClass):
             fields = [f.name for f in o.fielddefinitions.select_subclasses().order_by('pk')
                       if not hasattr(f, 'auto_now_add') or not f.auto_now_add]
-
         return Alass
 
 
