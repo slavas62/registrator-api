@@ -2,11 +2,11 @@
 from copy import deepcopy
 from django import forms
 from django.contrib import admin
+from django.db import ProgrammingError
 from mutant.models import FieldDefinition
 from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME
 from userlayers.models import ModelDefinition
 from userlayers.api.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
-from polymodels.models import PolymorphicModel
 
 
 class FieldDefinitionInlineAdmin(admin.TabularInline):
@@ -124,4 +124,8 @@ class ModelDefinitionAdminBuilder(object):
 
 
 builder = ModelDefinitionAdminBuilder()
-builder.build()
+# catch syncdb exception
+try:
+    builder.build()
+except ProgrammingError as e:
+    pass
