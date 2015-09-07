@@ -43,13 +43,13 @@ class ModelDefinitionFormAdmin(forms.ModelForm):
     def __init__(self, instance=None, *args, **kwargs):
         super(ModelDefinitionFormAdmin, self).__init__(instance=instance, *args, **kwargs)
         if instance:
-            geomentry_field = FieldDefinition.objects.get_by_natural_key(
-                instance.app_label, instance.object_name, DEFAULT_MD_GEOMETRY_FIELD_NAME)
-            gt = dict(GEOMETRY_FIELD_TYPES)
-            self.fields['geometry_field'] = forms.ChoiceField(
-                initial=gt.keys()[gt.values().index(geomentry_field.__class__)],
-                choices=self.GEOMETRY_FIELD_CHOICES, label=self.GEOMETRY_FIELD_LABEL)
-            self.fields['geometry_field'].widget.attrs["disabled"] = True
+            try:
+                geomentry_field = instance.fielddefinitions.select_subclasses().get(name=DEFAULT_MD_GEOMETRY_FIELD_NAME)
+                self.fields['geometry_field'] = forms.CharField(initial=geomentry_field._meta.verbose_name,
+                                                                label=self.GEOMETRY_FIELD_LABEL)
+                self.fields['geometry_field'].widget.attrs["disabled"] = True
+            except:
+                del self.fields['geometry_field']
 
 
 class ModelDefinitionAdmin(admin.ModelAdmin):
