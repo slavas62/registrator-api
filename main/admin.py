@@ -1,8 +1,9 @@
 # coding: utf-8
 from copy import deepcopy
 from django import forms
-from django.contrib import admin
 from django.db import ProgrammingError
+from django.contrib import admin
+from django.core.exceptions import PermissionDenied
 from mutant.models import FieldDefinition
 from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME
 from userlayers.models import ModelDefinition
@@ -89,6 +90,9 @@ class ModelDefinitionAdminBuilder(object):
         exclude = ['editable', 'db_column', 'primary_key']
         save_as = True
 
+        def get_actions(self, request):
+            return {}
+
         def has_change_permission(self, request, obj=None):
             if obj and obj.name == DEFAULT_MD_GEOMETRY_FIELD_NAME:
                 return False
@@ -96,6 +100,16 @@ class ModelDefinitionAdminBuilder(object):
 
         def has_delete_permission(self, request, obj=None):
             return self.has_change_permission(request, obj)
+
+        def delete_model(self, request, obj):
+            if not self.has_delete_permission(request, obj):
+                raise PermissionDenied
+            return super(ModelDefinitionAdminBuilder.FieldAdmin, self).delete_model(request, obj)
+
+        def save_model(self, request, obj, form, change):
+            if change and not self.has_change_permission(request, obj):
+                raise PermissionDenied
+            return super(ModelDefinitionAdminBuilder.FieldAdmin, self).save_model(request, obj, form, change)
 
     def __init__(self):
         for field_type in dict(FIELD_TYPES).values():
