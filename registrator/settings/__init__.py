@@ -20,7 +20,7 @@ ALLOWED_HOSTS = ['*']
 
 APPS = [
     # 'acc',
-    'main',
+    'userlayers_admin',
 ]
 
 USERLAYERS_APPS = [
@@ -48,7 +48,7 @@ INSTALLED_APPS = APPS + [
     'django.contrib.staticfiles',
 ] + USERLAYERS_APPS
 
-ROOT_URLCONF = 'main.urls'
+ROOT_URLCONF = 'userlayers_admin.urls'
 
 WSGI_APPLICATION = 'wsgi.application'
 

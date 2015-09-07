@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import RedirectView
-from main.views import TokenGetView
+from .views import TokenGetView
 
 admin.autodiscover()
 
@@ -15,8 +15,8 @@ urlpatterns = [
     url(r'^secret_admin_zone/', include(admin.site.urls)),
     # url(r'^acc/', include('acc.urls')),
     url(r'^userlayers/', include('userlayers.urls')),
-    url(r'^login/', 'main.views.login_view', name='login'),
-    url(r'^logout/', 'main.views.logout_view', name='logout'),
+    url(r'^login/', 'userlayers_admin.views.login_view', name='login'),
+    url(r'^logout/', 'userlayers_admin.views.logout_view', name='logout'),
 ]
 
 if settings.DEBUG:
