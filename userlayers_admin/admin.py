@@ -5,16 +5,17 @@ from django.db import ProgrammingError
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
 from mutant.models import FieldDefinition
-from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME
-from userlayers.models import ModelDefinition
+from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME, get_modeldefinition_model
 from userlayers.api.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
+
+ModelDef = get_modeldefinition_model()
 
 
 class FieldDefinitionInlineAdmin(admin.TabularInline):
     model = FieldDefinition
     fk_name = 'model_def'
     suit_classes = 'suit-tab suit-tab-fields'
-    fields = ['id', 'content_type', 'name', 'null', 'blank']
+    fields = ['id', 'content_type', 'name', 'verbose_name', 'null', 'blank']
 
     def get_readonly_fields(self, request, obj=None):
         return [f.name for f in self.model._meta.fields]
@@ -32,7 +33,7 @@ class ModelDefinitionFormAdmin(forms.ModelForm):
     geometry_field = forms.ChoiceField(choices=GEOMETRY_FIELD_CHOICES, label=GEOMETRY_FIELD_LABEL)
 
     class Meta:
-        model = ModelDefinition
+        model = ModelDef
         widgets = {
             'verbose_name': forms.TextInput(),
             'verbose_name_plural': forms.TextInput(),
@@ -42,24 +43,24 @@ class ModelDefinitionFormAdmin(forms.ModelForm):
         super(ModelDefinitionFormAdmin, self).__init__(*args, **kwargs)
         instance = kwargs.get('instance', None)
         if instance:
-            try:
-                geomentry_field = instance.fielddefinitions.select_subclasses().get(name=DEFAULT_MD_GEOMETRY_FIELD_NAME)
+            geomentry_field = instance.fielddefinitions.select_subclasses().filter(
+                name=DEFAULT_MD_GEOMETRY_FIELD_NAME).first()
+            if geomentry_field:
                 self.fields['geometry_field'] = forms.CharField(initial=geomentry_field._meta.verbose_name,
                                                                 label=self.GEOMETRY_FIELD_LABEL)
-                self.fields['geometry_field'].widget.attrs["disabled"] = True
-            except:
-                del self.fields['geometry_field']
+                self.fields['geometry_field'].widget.attrs["readonly"] = True
 
 
 class ModelDefinitionAdmin(admin.ModelAdmin):
-    model = ModelDefinition
+    model = ModelDef
     form = ModelDefinitionFormAdmin
     inlines = [FieldDefinitionInlineAdmin]
     fieldsets = [[
         None,
         {
             'classes': ['suit-tab', 'suit-tab-general'],
-            'fields': ['name', 'owner', 'geometry_field', 'verbose_name', 'verbose_name_plural']
+            'fields': ['name', 'owner', 'geometry_field', 'verbose_name', 'verbose_name_plural'] +
+                      [_.name for _ in ModelDef._meta.local_concrete_fields if _.name != 'modeldef_ptr']
         }
     ]]
     suit_form_tabs = [
@@ -77,7 +78,7 @@ class ModelDefinitionAdmin(admin.ModelAdmin):
             geometry_field.save()
 
 
-admin.site.register(ModelDefinition, ModelDefinitionAdmin)
+admin.site.register(ModelDef, ModelDefinitionAdmin)
 
 
 class ModelDefinitionAdminBuilder(object):
@@ -133,13 +134,14 @@ class ModelDefinitionAdminBuilder(object):
 
     @classmethod
     def get_models(cls):
-        return ModelDefinition.objects.all()
+        return ModelDef.objects.all()
 
     @classmethod
     def get_admin_class(cls, o):
         class Alass(cls.AdminClass):
             fields = [f.name for f in o.fielddefinitions.select_subclasses().order_by('pk')
                       if f.editable and not hasattr(f, 'auto_now_add') or not f.auto_now_add]
+
         return Alass
 
 

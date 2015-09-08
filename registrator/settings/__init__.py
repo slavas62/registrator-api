@@ -47,6 +47,7 @@ INSTALLED_APPS = APPS + [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
 ] + USERLAYERS_APPS
 
 ROOT_URLCONF = 'main.urls'
@@ -119,7 +120,7 @@ SUIT_CONFIG = {
     'MENU': [
         {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('auth.user', 'auth.group')},
         {'label': u'Объекты', 'icon': 'icon-hdd', 'app': 'objects'},
-        {'label': u'Модели', 'icon': 'icon-book', 'app': 'userlayers'},
+        {'label': u'Модели', 'icon': 'icon-book', 'app': 'main'},
         {'label': u'Поля', 'icon': 'icon-list', 'app': 'mutant'},
     ],
 }
@@ -139,6 +140,22 @@ DATABASES = {
         'PORT': '5432',
     },
 }
+
+
+RESOURCE_FOLDER_IN_MEDIA_ROOT = 'resource'
+RESOURCE_FOLDER_IMAGE_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'image')
+THUMBNAIL_PREFIX = os.path.join(RESOURCE_FOLDER_IMAGE_IN_MEDIA_ROOT, 'cache/')
+RESOURCE_FOLDER_VIDEO_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'video')
+RESOURCE_IMAGE_THUMBNAILS = [
+    {'name': '200x200', 'geometry_string': '200x200', 'upscale': True},
+    {'name': '600', 'geometry_string': '600'},
+]
+ICON_FOLDER_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'icon')
+THUMBNAIL_UPSCALE = False
+THUMBNAIL_QUALITY = 100
+
+
+USERLAYERS_MODELDEFINITION_MODEL = 'main.MainModelDef'
 
 
 try:

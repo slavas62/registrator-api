@@ -8,3 +8,4 @@ syntax: glob
 api/config.py
 registrator/config.py
 userlayers
+media/*
