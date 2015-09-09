@@ -8,18 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'MainModelDef'
-        db.create_table('main_modeldefinition', (
-            (u'modeldef_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['userlayers.ModelDef'], unique=True, primary_key=True)),
-            ('hidden', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('icon', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
-        ))
-        db.send_create_signal('main', ['MainModelDef'])
+        # Adding field 'MainModelDef.resource'
+        db.add_column('main_modeldefinition', 'resource',
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'MainModelDef'
-        db.delete_table('main_modeldefinition')
+        # Deleting field 'MainModelDef.resource'
+        db.delete_column('main_modeldefinition', 'resource')
 
 
     models = {
@@ -63,7 +60,8 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['id']", 'object_name': 'MainModelDef', 'db_table': "'main_modeldefinition'", '_ormbases': ['userlayers.ModelDef']},
             'hidden': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'icon': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            u'modeldef_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['userlayers.ModelDef']", 'unique': 'True', 'primary_key': 'True'})
+            u'modeldef_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['userlayers.ModelDef']", 'unique': 'True', 'primary_key': 'True'}),
+            'resource': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
         },
         u'mutant.modeldefinition': {
             'Meta': {'ordering': "('name',)", 'object_name': 'ModelDefinition', '_ormbases': [u'contenttypes.ContentType']},

@@ -8,15 +8,12 @@ LOG_DIR = os.path.join(BASE_DIR, '..', '..', '.log')
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
-
 SECRET_KEY = '%s5+l6&^f(x2c1q17bn)zgn_zrbhlv$h=4871#af8ij9+jrp4a'
-
 
 DEBUG = False
 DEBUG_SQL = False
 
 ALLOWED_HOSTS = ['*']
-
 
 APPS = [
     # 'acc',
@@ -54,7 +51,6 @@ ROOT_URLCONF = 'main.urls'
 
 WSGI_APPLICATION = 'wsgi.application'
 
-
 LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'Europe/Moscow'
@@ -75,7 +71,7 @@ STATICFILES_FINDERS = (
 )
 
 MEDIA_URL = '/m/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # AUTH_USER_MODEL = 'acc.User'
@@ -111,7 +107,6 @@ TEMPLATE_CONTEXT_PROCESSORS = [
 TASTYPIE_DEFAULT_FORMATS = ['json']
 API_LIMIT_PER_PAGE = 100
 
-
 SUIT_CONFIG = {
     'SEARCH_URL': '',
     'ADMIN_NAME': 'REGISTRATOR API',
@@ -129,7 +124,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': ''
 }
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
@@ -140,7 +134,6 @@ DATABASES = {
         'PORT': '5432',
     },
 }
-
 
 RESOURCE_FOLDER_IN_MEDIA_ROOT = 'resource'
 RESOURCE_FOLDER_IMAGE_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'image')
@@ -154,22 +147,19 @@ ICON_FOLDER_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'icon')
 THUMBNAIL_UPSCALE = False
 THUMBNAIL_QUALITY = 100
 
-
-USERLAYERS_MODELDEFINITION_MODEL = 'main.MainModelDef'
-
+USERLAYERS_MD_MODEL = 'main.MainModelDef'
+# USERLAYERS_MD_CLASS_RESERVED_NAMES = ['image', 'video']
+USERLAYERS_ADMIN_MD_OBJECT_CLASS = 'main.admin.MainModelDefinitionObjectAdmin'
 
 try:
     from registrator.config import *
 except ImportError:
     pass
 
-
 from .log import LOGGING
-
 
 TEMPLATE_DEBUG = DEBUG
 ENABLE_DEBUG_TOOLBAR = DEBUG
-
 
 if ENABLE_DEBUG_TOOLBAR:
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)

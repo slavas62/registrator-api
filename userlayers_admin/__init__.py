@@ -1,3 +1,2 @@
 # coding: utf-8
-
-import signals_receivers
+import userlayers_admin.signals_receivers

@@ -1,6 +1,7 @@
 gdal>=1.10
 psycopg2==2.6.1
 colorlog
+ordered-set
 #https://github.com/charettes/django-mutant/archive/migrations.zip
 hg+ssh://hg@bitbucket.org/atlantij/userlayers/@custom_modeldefinition
 #hg+ssh://hg@bitbucket.org/atlantij/userlayers/
