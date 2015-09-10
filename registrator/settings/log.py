@@ -38,7 +38,7 @@ LOGGING = {
             },
         },
         'db_color_no_level': {
-            '()': 'registrator.lib.logging.db.ColoredFormatter',
+            '()': 'main.contrib.logging.db.ColoredFormatter',
             'format': '%(log_color)s%(message)s',
             'log_colors': {
                 'FAST':     'green',

@@ -1,15 +1,8 @@
 # coding: utf-8
-import os
-import datetime
-import hashlib
 from django.conf import settings
 from django.db.models import ImageField, BooleanField
 from userlayers.models import ModelDef, ModelDefManager
-
-
-def file_upload_to(instance, filename):
-    hd = hashlib.md5(str(datetime.datetime.now())).hexdigest()
-    return os.path.join(instance.upload_to, hd[:2], hd[2:4], '%s%s' % (hd, os.path.splitext(filename)[1]))
+from main.contrib.helper import upload_to_generate_filename
 
 
 class MainModelDefManager(ModelDefManager):
@@ -30,7 +23,7 @@ class MainModelDef(ModelDef):
 
     hidden = BooleanField(default=False, verbose_name=u'скрытная сущность')
     resource = BooleanField(default=False, verbose_name=u'ресурс')
-    icon = ImageField(upload_to=file_upload_to, null=True, blank=True, verbose_name=u'иконка')
+    icon = ImageField(upload_to=upload_to_generate_filename, null=True, blank=True, verbose_name=u'иконка')
 
     objects = MainModelDefManager()
     admin_objects = MainModelDefAdminManager()

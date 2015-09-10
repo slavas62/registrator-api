@@ -7,6 +7,7 @@ from mutant.models import FieldDefinition
 from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME, \
     USERLAYERS_MD_CLASS_RESERVED_NAMES, get_modeldefinition_model
 from userlayers.api.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
+from sorl.thumbnail.admin.current import AdminImageWidget
 
 ModelDef = get_modeldefinition_model()
 
@@ -37,6 +38,7 @@ class ModelDefinitionFormAdmin(forms.ModelForm):
         widgets = {
             'verbose_name': forms.TextInput(),
             'verbose_name_plural': forms.TextInput(),
+            'icon': AdminImageWidget
         }
 
     def __init__(self, *args, **kwargs):

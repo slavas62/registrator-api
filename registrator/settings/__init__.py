@@ -3,8 +3,8 @@
 import os
 import sys
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LOG_DIR = os.path.join(BASE_DIR, '..', '..', '.log')
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+LOG_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', '.log'))
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
@@ -64,14 +64,17 @@ USE_TZ = False
 FIRST_DAY_OF_WEEK = 1
 
 STATIC_URL = '/s/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_prepared')
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'static_prepared'))
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
 MEDIA_URL = '/m/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'media'))
+if not os.path.exists(MEDIA_ROOT):
+    os.makedirs(MEDIA_ROOT)
+
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # AUTH_USER_MODEL = 'acc.User'
@@ -136,9 +139,9 @@ DATABASES = {
 }
 
 RESOURCE_FOLDER_IN_MEDIA_ROOT = 'resource'
-RESOURCE_FOLDER_IMAGE_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'image')
-THUMBNAIL_PREFIX = os.path.join(RESOURCE_FOLDER_IMAGE_IN_MEDIA_ROOT, 'cache/')
-RESOURCE_FOLDER_VIDEO_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'video')
+RESOURCE_FOLDER_IMAGES_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'image')
+THUMBNAIL_PREFIX = os.path.join(RESOURCE_FOLDER_IMAGES_IN_MEDIA_ROOT, 'cache/')
+RESOURCE_FOLDER_VIDEOS_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'video')
 RESOURCE_IMAGE_THUMBNAILS = [
     {'name': '200x200', 'geometry_string': '200x200', 'upscale': True},
     {'name': '600', 'geometry_string': '600'},
