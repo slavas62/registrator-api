@@ -7,8 +7,26 @@ from django.db import models
 
 from django.contrib.admin import TabularInline
 from sorl.thumbnail.admin.current import AdminImageWidget
+from userlayers import get_modeldefinition_model
+from userlayers_admin.admin.modeldefinition import ModelDefinitionAdmin, ModelDefinitionFormAdmin
 from userlayers_admin.admin.object import ModelDefinitionObjectAdmin
 from main.contrib.helper import generate_filename
+
+ModelDef = get_modeldefinition_model()
+
+
+class MainModelDefinitionFormAdmin(ModelDefinitionFormAdmin):
+    class Meta:
+        model = ModelDef
+        widgets = {
+            'verbose_name': forms.TextInput(),
+            'verbose_name_plural': forms.TextInput(),
+            'icon': AdminImageWidget(),
+        }
+
+
+class MainModelDefinitionAdmin(ModelDefinitionAdmin):
+    form = MainModelDefinitionFormAdmin
 
 
 class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
@@ -35,9 +53,7 @@ class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
                     instance.file.__unicode__ = lambda: file_path
                 kwargs['instance'] = instance
                 super(InlineForm, self).__init__(*args, **kwargs)
-                self.fields['file'] = self.file_field_class(required=True, label=u'файл',
-                                                            # widget=AdminImageWidget
-                                                            )
+                self.fields['file'] = self.file_field_class(required=True, label=u'файл')
 
             def save(self, *args, **kwargs):
                 self.instance.file = self.handle_uploaded_file(self.cleaned_data['file'])
