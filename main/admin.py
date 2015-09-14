@@ -87,4 +87,5 @@ class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
             }
             adminclass = type('{0}InlineAdmin'.format(f.field.rel.related_name), (TabularInline,), attrs)
             self.inlines.append(adminclass)
+
         return super(MainModelDefinitionObjectAdmin, self).get_inline_instances(request, obj)
