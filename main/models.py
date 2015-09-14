@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.db.models import ImageField, BooleanField
+from django.db.models import ImageField, BooleanField, PositiveSmallIntegerField
 from userlayers.models import ModelDef, ModelDefManager
 from main.contrib.helper import upload_to_generate_filename
 
@@ -21,8 +21,15 @@ class MainModelDefObjectsAdminManager(MainModelDefAdminManager):
 class MainModelDef(ModelDef):
     upload_to = settings.ICON_FOLDER_IN_MEDIA_ROOT
 
+    RESOURCE_TYPE_CHOICES_IMAGE = 1
+    RESOURCE_TYPE_CHOICES_VIDEO = 2
+    RESOURCE_TYPE_CHOICES = [
+        [RESOURCE_TYPE_CHOICES_IMAGE, 'image'],
+        [RESOURCE_TYPE_CHOICES_VIDEO, 'video'],
+    ]
+
     hidden = BooleanField(default=False, verbose_name=u'скрытная сущность')
-    resource = BooleanField(default=False, verbose_name=u'ресурс')
+    resource_type = PositiveSmallIntegerField(choices=RESOURCE_TYPE_CHOICES, null=True, blank=True)
     icon = ImageField(upload_to=upload_to_generate_filename, null=True, blank=True, verbose_name=u'иконка')
 
     objects = MainModelDefManager()

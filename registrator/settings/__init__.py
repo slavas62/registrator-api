@@ -89,6 +89,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'userlayers_admin.contrib.request_middleware.RequestMiddleware',
 ]
 
 TEMPLATE_LOADERS = [
@@ -154,6 +155,7 @@ USERLAYERS_MD_MODEL = 'main.MainModelDef'
 # USERLAYERS_MD_CLASS_RESERVED_NAMES = ['image', 'video']
 USERLAYERS_ADMIN_MD_CLASS = 'main.admin.MainModelDefinitionAdmin'
 USERLAYERS_ADMIN_MD_OBJECT_CLASS = 'main.admin.MainModelDefinitionObjectAdmin'
+USERLAYERS_API_TABLE_PROXY_CLASS = 'main.api.TableProxyResource'
 
 try:
     from registrator.config import *
