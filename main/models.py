@@ -36,7 +36,7 @@ class MainModelDef(ModelDef):
     admin_objects = MainModelDefAdminManager()
     admin_objects_objects = MainModelDefObjectsAdminManager()
 
-    admin_exclude_fields = ['hidden', 'resource', 'resource_type']
+    admin_exclude_fields = ['hidden', 'resource_type']
 
     class Meta:
         app_label = 'main'
