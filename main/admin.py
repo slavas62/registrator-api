@@ -30,6 +30,8 @@ class MainModelDefinitionAdmin(ModelDefinitionAdmin):
 
 
 class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
+    list_display = ['name', 'created']
+
     suit_form_tabs = ModelDefinitionObjectAdmin.suit_form_tabs + [
         ['images', u'Изображения'],
         ['videos', u'Видео'],

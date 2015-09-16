@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.contrib.contenttypes.models import ContentType
 from ordered_set import OrderedSet
 from django import forms
 from django.contrib import admin
@@ -25,6 +26,13 @@ class FieldDefinitionInlineAdmin(admin.TabularInline):
 
     def has_add_permission(self, request):
         return False
+
+
+class FieldDefinitionInlineOneMoreAdmin(admin.TabularInline):
+    fk_name = 'model_def'
+    exclude = ['db_column', 'db_index', 'help_text', 'editable', 'primary_key', 'unique', 'unique_for_date',
+               'unique_for_month', 'unique_for_year', 'content_type']
+    extra = 0
 
 
 class ModelDefinitionFormAdmin(forms.ModelForm):
@@ -58,9 +66,37 @@ class ModelDefinitionFormAdmin(forms.ModelForm):
         return is_valid
 
 
+def get_inline(field_type):
+
+    field_content_type = ContentType.objects.get_for_model(field_type)
+
+    class Form(forms.ModelForm):
+        class Meta:
+            model = field_type
+            widgets = {
+                'verbose_name': forms.TextInput(),
+                'verbose_name_plural': forms.TextInput(),
+            }
+
+    class Inline(FieldDefinitionInlineOneMoreAdmin):
+        model = field_type
+        form = Form
+        suit_classes = 'suit-tab suit-tab-fields'
+
+        def get_queryset(self, request):
+            return super(Inline, self).get_queryset(request).filter(content_type=field_content_type)
+
+    return Inline
+
+
 class ModelDefinitionAdmin(admin.ModelAdmin):
     form = ModelDefinitionFormAdmin
     inlines = [FieldDefinitionInlineAdmin]
+    # inlines = []
+    # for field_type in dict(FIELD_TYPES).values():
+    #     inlines.append(get_inline(field_type))
+
+    list_display = ['verbose_name', 'name', 'model']
     fieldsets = [[
         None,
         {

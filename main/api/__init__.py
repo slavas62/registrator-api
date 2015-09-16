@@ -7,6 +7,12 @@ ModelDef = get_modeldefinition_model()
 
 
 class TableProxyResource(TableProxyResourceBase):
+    def get_resource_class_queryset(self):
+        qs = super(TableProxyResource, self).get_resource_class_queryset()
+        if not self.user.is_superuser:
+            qs = qs.filter(user_id=self.user.id)
+        return qs
+
     def get_inline_class(self, foreign_field, nickname):
         ic_base = super(TableProxyResource, self).get_inline_class(foreign_field, nickname)
 
@@ -30,3 +36,12 @@ class TableProxyResource(TableProxyResourceBase):
                 return bundle
 
         return ThisInline
+
+    def get_resource_class(self):
+        c = super(TableProxyResource, self).get_resource_class()
+        super_c = c.save
+        def save(self, bundle, skip_errors=False):
+            setattr(bundle.obj, 'user_id', self.request.user.id)
+            return super_c(self, bundle, skip_errors)
+        c.save = save
+        return c
