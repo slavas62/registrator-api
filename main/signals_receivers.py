@@ -21,8 +21,7 @@ def post_change(*args, **kwargs):
     instance = kwargs.get('instance')
     if instance.name in wow or instance.hidden:
         return
-    created = kwargs.get('created', None)
-    if created:
+    if kwargs.get('created', None):
         ForeignKeyDefinition(
             name='user', model_def_id=instance.contenttype_ptr_id, related_name='%ss' % instance.name,
             to_id=ContentType.objects.get_for_model(get_user_model()).id,

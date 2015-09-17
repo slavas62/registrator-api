@@ -1,5 +1,4 @@
 # coding: utf-8
-from django.contrib.contenttypes.models import ContentType
 from ordered_set import OrderedSet
 from django import forms
 from django.contrib import admin
@@ -26,13 +25,6 @@ class FieldDefinitionInlineAdmin(admin.TabularInline):
 
     def has_add_permission(self, request):
         return False
-
-
-class FieldDefinitionInlineOneMoreAdmin(admin.TabularInline):
-    fk_name = 'model_def'
-    exclude = ['db_column', 'db_index', 'help_text', 'editable', 'primary_key', 'unique', 'unique_for_date',
-               'unique_for_month', 'unique_for_year', 'content_type']
-    extra = 0
 
 
 class ModelDefinitionFormAdmin(forms.ModelForm):
@@ -67,21 +59,29 @@ class ModelDefinitionFormAdmin(forms.ModelForm):
 
 
 def get_inline(field_type):
-
-    field_content_type = ContentType.objects.get_for_model(field_type)
+    field_content_type = field_type.get_content_type()
 
     class Form(forms.ModelForm):
+        def __init__(self, *args, **kwargs):
+            super(Form, self).__init__(*args, **kwargs)
+            self.initial.update({'content_type': field_content_type})
+
         class Meta:
             model = field_type
             widgets = {
                 'verbose_name': forms.TextInput(),
                 'verbose_name_plural': forms.TextInput(),
+                'content_type': forms.TextInput(),
             }
 
-    class Inline(FieldDefinitionInlineOneMoreAdmin):
+    class Inline(admin.TabularInline):
         model = field_type
+        fk_name = 'model_def'
+        exclude = ['db_column', 'db_index', 'help_text', 'editable', 'primary_key', 'unique', 'unique_for_date',
+                   'unique_for_month', 'unique_for_year']
         form = Form
         suit_classes = 'suit-tab suit-tab-fields'
+        extra = 0
 
         def get_queryset(self, request):
             return super(Inline, self).get_queryset(request).filter(content_type=field_content_type)

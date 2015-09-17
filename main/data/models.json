@@ -33,8 +33,8 @@
             "geometry": {
                 "type": "point",
                 "args": {
-                    "null": true,
-                    "blank": true,
+                    "null": false,
+                    "blank": false,
                     "srid": 4326,
                     "geography": true,
                     "verbose_name": "местоположение"
@@ -113,8 +113,8 @@
             "geometry": {
                 "type": "point",
                 "args": {
-                    "null": true,
-                    "blank": true,
+                    "null": false,
+                    "blank": false,
                     "srid": 4326,
                     "geography": true,
                     "verbose_name": "местоположение"
@@ -184,8 +184,8 @@
             "geometry": {
                 "type": "point",
                 "args": {
-                    "null": true,
-                    "blank": true,
+                    "null": false,
+                    "blank": false,
                     "srid": 4326,
                     "geography": true,
                     "verbose_name": "местоположение"
@@ -263,8 +263,8 @@
             "geometry": {
                 "type": "point",
                 "args": {
-                    "null": true,
-                    "blank": true,
+                    "null": false,
+                    "blank": false,
                     "srid": 4326,
                     "geography": true,
                     "verbose_name": "местоположение"
@@ -350,8 +350,8 @@
             "geometry": {
                 "type": "point",
                 "args": {
-                    "null": true,
-                    "blank": true,
+                    "null": false,
+                    "blank": false,
                     "srid": 4326,
                     "geography": true,
                     "verbose_name": "местоположение"
@@ -437,8 +437,8 @@
             "geometry": {
                 "type": "point",
                 "args": {
-                    "null": true,
-                    "blank": true,
+                    "null": false,
+                    "blank": false,
                     "srid": 4326,
                     "geography": true,
                     "verbose_name": "местоположение"

@@ -44,3 +44,6 @@ class MainModelDef(ModelDef):
         ordering = ['id']
         verbose_name = u'модель'
         verbose_name_plural = u'модели'
+
+    def __unicode__(self):
+        return self.name

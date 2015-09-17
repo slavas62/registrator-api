@@ -30,12 +30,19 @@ class MainModelDefinitionAdmin(ModelDefinitionAdmin):
 
 
 class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
-    list_display = ['name', 'created']
+    list_display = ['user_id', 'name', 'created']
 
     suit_form_tabs = ModelDefinitionObjectAdmin.suit_form_tabs + [
         ['images', u'Изображения'],
         ['videos', u'Видео'],
     ]
+
+    def get_queryset(self, request):
+        return super(MainModelDefinitionObjectAdmin, self).get_queryset(request).prefetch_related('user')
+
+    def user_id(self, obj):
+        return obj.user.id
+    user_id.short_description = u'Пользователь'
 
     def get_inline_instances(self, request, obj=None):
         self.inlines = []

@@ -16,7 +16,7 @@ class ModelDefinitionAdminBuilder(object):
     objects_admin_class = get_objects_admin_class()
 
     class FieldAdmin(admin.ModelAdmin):
-        list_display = ['id', '__str__']
+        list_display = ['id', 'name', 'verbose_name', 'modeldef']
         exclude = ['editable', 'db_column', 'primary_key']
         save_as = True
 
@@ -41,11 +41,30 @@ class ModelDefinitionAdminBuilder(object):
                 raise PermissionDenied
             return super(ModelDefinitionAdminBuilder.FieldAdmin, self).save_model(request, obj, form, change)
 
+        def modeldef(self, obj):
+            return obj.model_def.verbose_name or obj.model_def.name
+
     def __init__(self):
+        def regit(field_type):
+            field_content_type = field_type.get_content_type()
+
+            class ThisFieldAdmin(self.FieldAdmin):
+                model = field_type
+
+                def get_queryset(self, request):
+                    qs = super(ThisFieldAdmin, self) \
+                        .get_queryset(request) \
+                        .filter(
+                        content_type=field_content_type,
+                        model_def_id__in=[
+                            _['id'] for _ in getattr(ModelDef, 'admin_objects', ModelDef.objects).values('id')]) \
+                        .prefetch_related('model_def')
+                    return qs
+
+            admin.site.register(field_type, ThisFieldAdmin)
+
         for field_type in dict(FIELD_TYPES).values():
-            attrs = {'model': field_type}
-            o = type('{0}Admin'.format(field_type.__name__), (self.FieldAdmin,), attrs)
-            admin.site.register(field_type, o)
+            regit(field_type)
 
     def build(self):
         registry = {}
