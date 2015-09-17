@@ -6,19 +6,24 @@ from django.core.exceptions import NON_FIELD_ERRORS
 from mutant.models import FieldDefinition
 from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME, \
     USERLAYERS_MD_CLASS_RESERVED_NAMES, get_modeldefinition_model
-from userlayers.api.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
+from userlayers.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
+from userlayers.models import ModelDefFieldOrder
+from suit.admin import SortableTabularInline
 
 ModelDef = get_modeldefinition_model()
 
 
 class FieldDefinitionInlineAdmin(admin.TabularInline):
+# class FieldDefinitionInlineAdmin(SortableTabularInline):
     model = FieldDefinition
     fk_name = 'model_def'
+    # model = ModelDefFieldOrder
     suit_classes = 'suit-tab suit-tab-fields'
     fields = ['id', 'content_type', 'name', 'verbose_name', 'null', 'blank']
+    # sortable = 'order'
 
     def get_readonly_fields(self, request, obj=None):
-        return [f.name for f in self.model._meta.fields]
+        return [f.name for f in self.model._meta.fields if f.name != 'order']
 
     def has_delete_permission(self, request, obj=None):
         return False

@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME, get_modeldefinition_model
-from userlayers.api.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
+from userlayers.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
 from django.db.models import ForeignKey
 from django.forms import ModelForm
 from userlayers_admin.admin.object.admin_class import get_objects_admin_class
