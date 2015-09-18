@@ -40,8 +40,8 @@ class TableProxyResource(TableProxyResourceBase):
 
         return ThisInline
 
-    def get_resource_class(self):
-        R = super(TableProxyResource, self).get_resource_class()
+    def get_resource_class(self, request):
+        R = super(TableProxyResource, self).get_resource_class(request)
 
         class RR(R):
             def save(self, bundle, skip_errors=False):
