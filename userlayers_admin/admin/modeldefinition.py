@@ -14,13 +14,10 @@ ModelDef = get_modeldefinition_model()
 
 
 class FieldDefinitionInlineAdmin(admin.TabularInline):
-# class FieldDefinitionInlineAdmin(SortableTabularInline):
     model = FieldDefinition
     fk_name = 'model_def'
-    # model = ModelDefFieldOrder
     suit_classes = 'suit-tab suit-tab-fields'
     fields = ['id', 'content_type', 'name', 'verbose_name', 'null', 'blank']
-    # sortable = 'order'
 
     def get_readonly_fields(self, request, obj=None):
         return [f.name for f in self.model._meta.fields if f.name != 'order']
