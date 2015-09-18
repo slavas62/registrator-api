@@ -2,6 +2,7 @@ import os
 from django.conf import settings
 from tastypie import fields as tastypie_fields
 from sorl.thumbnail import get_thumbnail
+from userlayers.api.authorization import FullAccessForLoginedUsers
 from main.contrib.helper import generate_filename
 from userlayers import get_modeldefinition_model
 from userlayers.api.resources.table_proxy import TableProxyResource as UserlayersTableProxyResource
@@ -10,6 +11,10 @@ ModelDef = get_modeldefinition_model()
 
 
 class TableProxyResource(UserlayersTableProxyResource):
+    class Meta:
+        resource_name = 'tablesdata'
+        authorization = FullAccessForLoginedUsers()
+
     def get_resource_class_queryset(self):
         qs = super(TableProxyResource, self).get_resource_class_queryset()
         if not self.user.is_superuser:
