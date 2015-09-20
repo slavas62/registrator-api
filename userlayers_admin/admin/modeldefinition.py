@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.db.models import Q
 from ordered_set import OrderedSet
 from django import forms
 from django.contrib import admin
@@ -18,10 +19,10 @@ class FieldDefinitionInlineFormAdmin(forms.ModelForm):
     order = forms.IntegerField(widget=NumberInput(attrs={'class': 'hide input-mini suit-sortable'}), label=u'порядок')
 
     def __init__(self, *args, **kwargs):
-        instance = kwargs.get('instance')
+        instance = kwargs.get('instance', None)
         if instance:
             initial = kwargs.get('initial', {})
-            initial.update({'order': instance.order})
+            initial.update({'order': getattr(instance, 'order', 0)})
             kwargs['initial'] = initial
         super(FieldDefinitionInlineFormAdmin, self).__init__(*args, **kwargs)
 
