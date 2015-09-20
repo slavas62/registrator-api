@@ -4,20 +4,51 @@ from django import forms
 from django.contrib import admin
 from django.core.exceptions import NON_FIELD_ERRORS
 from mutant.models import FieldDefinition
+from suit.admin import SortableTabularInline, SortableListForm
+from suit.widgets import NumberInput
 from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME, \
     USERLAYERS_MD_CLASS_RESERVED_NAMES, get_modeldefinition_model
 from userlayers.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
 from userlayers.models import ModelDefFieldOrder
-from suit.admin import SortableTabularInline
 
 ModelDef = get_modeldefinition_model()
 
 
-class FieldDefinitionInlineAdmin(admin.TabularInline):
+class FieldDefinitionInlineFormAdmin(forms.ModelForm):
+    order = forms.IntegerField(widget=NumberInput(attrs={'class': 'hide input-mini suit-sortable'}), label=u'порядок')
+
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get('instance')
+        if instance:
+            initial = kwargs.get('initial', {})
+            initial.update({'order': instance.order})
+            kwargs['initial'] = initial
+        super(FieldDefinitionInlineFormAdmin, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super(FieldDefinitionInlineFormAdmin, self).save(commit)
+        o, o_created = ModelDefFieldOrder.objects.get_or_create(md=instance.model_def, field=instance)
+        o.order = self.cleaned_data['order']
+        o.save()
+        return instance
+
+
+class FieldDefinitionInlineAdmin(SortableTabularInline):
     model = FieldDefinition
+    form = FieldDefinitionInlineFormAdmin
     fk_name = 'model_def'
     suit_classes = 'suit-tab suit-tab-fields'
     fields = ['id', 'content_type', 'name', 'verbose_name', 'null', 'blank']
+
+    def get_queryset(self, request):
+        fd_table = FieldDefinition._meta.db_table
+        mdfd_order_table = ModelDefFieldOrder._meta.db_table
+        qs = super(FieldDefinitionInlineAdmin, self).get_queryset(request).extra(
+            select={'order': '%s.order' % mdfd_order_table},
+            tables=[mdfd_order_table],
+            where=["%s.id = %s.field_id" % (fd_table, mdfd_order_table)]
+        )
+        return qs
 
     def get_readonly_fields(self, request, obj=None):
         return [f.name for f in self.model._meta.fields if f.name != 'order']
