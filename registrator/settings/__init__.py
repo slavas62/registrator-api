@@ -70,14 +70,14 @@ USE_TZ = False
 FIRST_DAY_OF_WEEK = 1
 
 STATIC_URL = '/s/'
-STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'static_prepared'))
+STATIC_ROOT = os.path.join(ENV_DIR, 'www', 'static')
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
 MEDIA_URL = '/m/'
-MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'media'))
+MEDIA_ROOT = os.path.join(ENV_DIR, 'www', 'media')
 if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
 
