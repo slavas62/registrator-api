@@ -6,7 +6,7 @@ import dj_database_url
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 ENV_DIR = os.path.join(os.path.dirname(sys.executable), '..')
-LOG_DIR = os.path.join(BASE_DIR, '..', '..', '.log')
+LOG_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', '.log'))
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
@@ -22,6 +22,7 @@ ALLOWED_HOSTS = ['*']
 
 APPS = [
     # 'acc',
+    'userlayers_admin',
     'main',
 ]
 
@@ -48,6 +49,7 @@ INSTALLED_APPS = APPS + [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
 ] + USERLAYERS_APPS
 
 ROOT_URLCONF = 'main.urls'
@@ -68,19 +70,22 @@ USE_TZ = False
 FIRST_DAY_OF_WEEK = 1
 
 STATIC_URL = '/s/'
-STATIC_ROOT = os.path.join(ENV_DIR, 'www', 'static')
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'static_prepared'))
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
 MEDIA_URL = '/m/'
-MEDIA_ROOT = os.path.join(ENV_DIR, 'www', 'media')
+MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'media'))
+if not os.path.exists(MEDIA_ROOT):
+    os.makedirs(MEDIA_ROOT)
+
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # AUTH_USER_MODEL = 'acc.User'
-LOGIN_URL = '/acc/login'
-LOGOUT_URL = '/acc/logout'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE_CLASSES = [
@@ -90,6 +95,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'userlayers_admin.contrib.request_middleware.RequestMiddleware',
 ]
 
 TEMPLATE_LOADERS = [
@@ -117,18 +123,36 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'REGISTRATOR API',
     'LIST_PER_PAGE': 50,
     'SHOW_REQUIRED_ASTERISK': True,
-    # 'MENU': [
-    #     {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('auth.user', 'auth.group')},
-    #     {'label': u'Модели', 'icon': 'icon-blackboard', 'app': 'userlayers'},
-    #     {'label': u'Поля', 'icon': 'icon-book', 'app': 'mutant'},
-    #     {'label': u'Объекты', 'icon': 'icon-hdd', 'models': []},
-    # ],
-    # 'MENU_USERLAYERS_MODELS': 3
+    'MENU': [
+        {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('auth.user', 'auth.group')},
+        {'label': u'Объекты', 'icon': 'icon-hdd', 'app': 'objects'},
+        {'label': u'Модели', 'icon': 'icon-book', 'app': 'main'},
+        {'label': u'Поля', 'icon': 'icon-list', 'app': 'mutant'},
+    ],
 }
 
 DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': ''
 }
+
+RESOURCE_FOLDER_IN_MEDIA_ROOT = 'resource'
+RESOURCE_FOLDER_IMAGES_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'image')
+THUMBNAIL_PREFIX = os.path.join(RESOURCE_FOLDER_IMAGES_IN_MEDIA_ROOT, 'cache/')
+RESOURCE_FOLDER_VIDEOS_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'video')
+RESOURCE_IMAGE_THUMBNAILS = [
+    {'name': '200x200', 'geometry_string': '200x200', 'upscale': True},
+    {'name': '600', 'geometry_string': '600'},
+]
+ICON_FOLDER_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'icon')
+THUMBNAIL_UPSCALE = False
+THUMBNAIL_QUALITY = 100
+
+USERLAYERS_MD_PERMISSION_STRATEGY = 2
+USERLAYERS_MD_MODEL = 'main.MainModelDef'
+# USERLAYERS_MD_CLASS_RESERVED_NAMES = ['image', 'video']
+USERLAYERS_ADMIN_MD_CLASS = 'main.admin.MainModelDefinitionAdmin'
+USERLAYERS_ADMIN_MD_OBJECT_CLASS = 'main.admin.MainModelDefinitionObjectAdmin'
+USERLAYERS_API_TABLE_EXCLUDE_FIELDS = ['user_id', 'user']
 
 DATABASES = {'default': dj_database_url.config(default='postgres://')}
 
