@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME, get_modeldefinition_model
 from userlayers.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
 from django.db.models import ForeignKey
-from django.forms import ModelForm
+from django.forms import ModelForm, ChoiceField
 from userlayers_admin.admin.object.admin_class import get_objects_admin_class
 
 ModelDef = get_modeldefinition_model()
@@ -48,7 +48,23 @@ class ModelDefinitionAdminBuilder(object):
         def regit(field_type):
             field_content_type = field_type.get_content_type()
 
+            class ThisFieldFormAdmin(ModelForm):
+                model = field_type
+
+                def __init__(self, *args, **kwargs):
+                    super(ThisFieldFormAdmin, self).__init__(*args, **kwargs)
+                    self.fields['model_def'] = ChoiceField(
+                        [(md.pk, md.verbose_name) for md in
+                         getattr(ModelDef, 'admin_objects_objects', ModelDef.objects).all()])
+
+                def clean(self):
+                    cleaned_data = super(ThisFieldFormAdmin, self).clean()
+                    if 'model_def' in cleaned_data:
+                        cleaned_data['model_def'] = ModelDef.objects.get(pk=cleaned_data['model_def'])
+                    return cleaned_data
+
             class ThisFieldAdmin(self.FieldAdmin):
+                form = ThisFieldFormAdmin
                 model = field_type
 
                 def get_queryset(self, request):
