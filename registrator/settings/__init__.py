@@ -39,7 +39,7 @@ USERLAYERS_APPS = [
     'userlayers',
 ]
 
-INSTALLED_APPS = [
+INSTALLED_APPS = APPS + [
     'south',
     'suit',
     'django.contrib.gis',
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
-] + USERLAYERS_APPS + APPS
+] + USERLAYERS_APPS
 
 ROOT_URLCONF = 'main.urls'
 
