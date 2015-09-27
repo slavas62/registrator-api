@@ -17,7 +17,7 @@ class ModelDefinitionAdminBuilder(object):
 
     class FieldAdmin(admin.ModelAdmin):
         list_display = ['id', 'name', 'verbose_name', 'modeldef']
-        exclude = ['editable', 'db_column', 'primary_key']
+        exclude = ['editable', 'db_column', 'primary_key', 'content_type']
         save_as = True
 
         def get_actions(self, request):
