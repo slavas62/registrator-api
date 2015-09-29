@@ -2,7 +2,6 @@ import os
 from django.conf import settings
 from tastypie import fields as tastypie_fields
 from sorl.thumbnail import get_thumbnail
-from userlayers.api.authorization import FullAccessForLoginedUsers
 from main.contrib.helper import generate_filename
 from userlayers import get_modeldefinition_model
 from userlayers.api.resources.table_proxy import TableProxyResource as UserlayersTableProxyResource
@@ -11,9 +10,8 @@ ModelDef = get_modeldefinition_model()
 
 
 class TableProxyResource(UserlayersTableProxyResource):
-    class Meta:
-        resource_name = 'tablesdata'
-        authorization = FullAccessForLoginedUsers()
+    class Meta(UserlayersTableProxyResource.Meta):
+        pass
 
     def get_resource_class_queryset(self):
         qs = super(TableProxyResource, self).get_resource_class_queryset()
@@ -25,6 +23,9 @@ class TableProxyResource(UserlayersTableProxyResource):
         ic_base = super(TableProxyResource, self).get_inline_class(foreign_field, nickname)
 
         class ThisInline(ic_base):
+            class Meta(ic_base.Meta):
+                pass
+
             def dehydrate(self, bundle):
                 bundle = super(ThisInline, self).dehydrate(bundle)
                 if self.this_md.resource_type == ModelDef.RESOURCE_TYPE_CHOICES_IMAGE:
@@ -49,6 +50,9 @@ class TableProxyResource(UserlayersTableProxyResource):
         R = super(TableProxyResource, self).get_resource_class()
 
         class RR(R):
+            class Meta(R.Meta):
+                pass
+
             def save(self, bundle, skip_errors=False):
                 setattr(bundle.obj, 'user_id', self.request.user.id)
                 return super(RR, self).save(bundle, skip_errors)
