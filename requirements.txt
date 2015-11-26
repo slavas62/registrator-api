@@ -3,7 +3,7 @@ psycopg2==2.6.1
 colorlog
 ordered-set
 #https://github.com/charettes/django-mutant/archive/migrations.zip
-hg+ssh://hg@bitbucket.org/atlantij/userlayers@cb43657#egg=userlayers
+hg+ssh://hg@bitbucket.org/atlantij/userlayers@82e819f#egg=userlayers
 #hg+ssh://hg@bitbucket.org/atlantij/userlayers/
 django-debug-toolbar==1.3.2
 django-extensions==1.5.5
