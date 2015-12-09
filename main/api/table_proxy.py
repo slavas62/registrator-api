@@ -1,5 +1,6 @@
 import os
 from django.conf import settings
+from django.core.exceptions import FieldError
 from tastypie import fields as tastypie_fields
 from sorl.thumbnail import get_thumbnail
 from main.contrib.helper import generate_filename
@@ -16,7 +17,11 @@ class TableProxyResource(UserlayersTableProxyResource):
     def get_resource_class_queryset(self):
         qs = super(TableProxyResource, self).get_resource_class_queryset()
         if not self.user.is_superuser:
-            qs = qs.filter(user_id=self.user.id)
+            #Objects or media files objects filtering
+            try:
+                qs = qs.filter(user_id=self.user.id)
+            except FieldError as e:
+                qs = qs.filter(object__user_id=self.user.id)
         return qs
 
     def get_inline_class(self, foreign_field, nickname):
