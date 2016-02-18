@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^userlayers/api/', include(v1_api.urls)),
     url(r'^login/', 'main.views.login_view', name='login'),
     url(r'^logout/', 'main.views.logout_view', name='logout'),
+    url(r'^is-authenticated/', 'main.views.is_authenticated_view', name='is-authenticated'),
 ]
 
 if settings.DEBUG:

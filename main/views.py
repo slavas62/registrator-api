@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
@@ -27,6 +28,10 @@ def login_view(request, *args, **kwargs):
 def logout_view(request, *args, **kwargs):
     auth_logout(request)
     return HttpResponse('')
+
+def is_authenticated_view(request, *args, **kwargs):
+    data = {'is_authenticated': request.user.is_authenticated()}
+    return HttpResponse(json.dumps(data))
 
 
 class TokenGetView(View):
