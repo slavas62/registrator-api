@@ -1,4 +1,5 @@
 # coding: utf-8
+from django import forms
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
 from mutant.contrib.related.models import ForeignKeyDefinition
@@ -11,24 +12,29 @@ ModelDef = get_modeldefinition_model()
 
 
 class FieldFormAdmin(ModelForm):
+    class Meta:
+        pass
+
     def __init__(self, *args, **kwargs):
+        field_set_true = ['null', 'blank']
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}
+        kwargs['initial'].update(dict((f, True) for f in field_set_true))
         super(FieldFormAdmin, self).__init__(*args, **kwargs)
         self.fields['model_def'] = ChoiceField(
             [(md.pk, md.verbose_name) for md in
              getattr(ModelDef, 'admin_objects_objects', ModelDef.objects).all()])
-        # sorry
-        if 'ForeignKeyDefinition' in str(self._meta.model):
-            self.fields['to'] = ChoiceField(
-                [(md.pk, md.verbose_name) for md in
-                 getattr(ModelDef, 'admin_objects_objects', ModelDef.objects).all()])
+        for f in field_set_true:
+            self.fields[f].widget.attrs['onclick'] = 'return false'
 
     def clean(self):
         cleaned_data = super(FieldFormAdmin, self).clean()
         if 'model_def' in cleaned_data:
             cleaned_data['model_def'] = ModelDef.objects.get(pk=cleaned_data['model_def'])
-        if 'ForeignKeyDefinition' in str(self._meta.model) and 'to' in cleaned_data:
-            cleaned_data['to'] = ModelDef.objects.get(pk=cleaned_data['to'])
         return cleaned_data
+
+    def get_initial(self):
+        raise BaseException(123)
 
 
 class FieldAdmin(admin.ModelAdmin):
