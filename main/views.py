@@ -30,8 +30,8 @@ def logout_view(request, *args, **kwargs):
     return HttpResponse('')
 
 def is_authenticated_view(request, *args, **kwargs):
-    data = {'is_authenticated': request.user.is_authenticated()}
-    return HttpResponse(json.dumps(data))
+    data = {'isAuthenticated': request.user.is_authenticated()}
+    return HttpResponse(json.dumps(data), content_type = "application/json")
 
 
 class TokenGetView(View):
