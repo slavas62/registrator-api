@@ -2,12 +2,13 @@
 from copy import deepcopy
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import PermissionDenied
-from userlayers import DEFAULT_MD_GEOMETRY_FIELD_TYPE, DEFAULT_MD_GEOMETRY_FIELD_NAME, get_modeldefinition_model
-from userlayers.forms import FIELD_TYPES, GEOMETRY_FIELD_TYPES
+
+from userlayers import get_modeldefinition_model
+from userlayers.forms import FIELD_TYPES
 from django.db.models import ForeignKey
-from django.forms import ModelForm, ChoiceField
+from django.forms import ModelForm
 from userlayers_admin.admin.object.admin_class import get_objects_admin_class
+from userlayers_admin.admin.fields import FIELD_TYPES_ADMIN_CLASS
 
 ModelDef = get_modeldefinition_model()
 
@@ -15,74 +16,12 @@ ModelDef = get_modeldefinition_model()
 class ModelDefinitionAdminBuilder(object):
     objects_admin_class = get_objects_admin_class()
 
-    class FieldAdmin(admin.ModelAdmin):
-        list_display = ['id', 'name', 'verbose_name', 'modeldef']
-        exclude = ['editable', 'db_column', 'primary_key', 'content_type']
-        save_as = True
-
-        def get_actions(self, request):
-            return {}
-
-        def has_change_permission(self, request, obj=None):
-            if obj and obj.name == DEFAULT_MD_GEOMETRY_FIELD_NAME:
-                return False
-            return True
-
-        def has_delete_permission(self, request, obj=None):
-            return self.has_change_permission(request, obj)
-
-        def delete_model(self, request, obj):
-            if not self.has_delete_permission(request, obj):
-                raise PermissionDenied
-            return super(ModelDefinitionAdminBuilder.FieldAdmin, self).delete_model(request, obj)
-
-        def save_model(self, request, obj, form, change):
-            if change and not self.has_change_permission(request, obj):
-                raise PermissionDenied
-            return super(ModelDefinitionAdminBuilder.FieldAdmin, self).save_model(request, obj, form, change)
-
-        def modeldef(self, obj):
-            return obj.model_def.verbose_name or obj.model_def.name
-
-    def __init__(self):
-        def regit(field_type):
-            field_content_type = field_type.get_content_type()
-
-            class ThisFieldFormAdmin(ModelForm):
-                model = field_type
-
-                def __init__(self, *args, **kwargs):
-                    super(ThisFieldFormAdmin, self).__init__(*args, **kwargs)
-                    self.fields['model_def'] = ChoiceField(
-                        [(md.pk, md.verbose_name) for md in
-                         getattr(ModelDef, 'admin_objects_objects', ModelDef.objects).all()])
-
-                def clean(self):
-                    cleaned_data = super(ThisFieldFormAdmin, self).clean()
-                    if 'model_def' in cleaned_data:
-                        cleaned_data['model_def'] = ModelDef.objects.get(pk=cleaned_data['model_def'])
-                    return cleaned_data
-
-            class ThisFieldAdmin(self.FieldAdmin):
-                form = ThisFieldFormAdmin
-                model = field_type
-
-                def get_queryset(self, request):
-                    qs = super(ThisFieldAdmin, self) \
-                        .get_queryset(request) \
-                        .filter(
-                        content_type=field_content_type,
-                        model_def_id__in=[
-                            _['id'] for _ in getattr(ModelDef, 'admin_objects', ModelDef.objects).values('id')]) \
-                        .prefetch_related('model_def')
-                    return qs
-
-            admin.site.register(field_type, ThisFieldAdmin)
-
-        for field_type in dict(FIELD_TYPES).values():
-            regit(field_type)
-
     def build(self):
+        # fields
+        for field_type_name, field_type_admin_class in FIELD_TYPES_ADMIN_CLASS.items():
+            admin.site.register(dict(FIELD_TYPES).get(field_type_name), field_type_admin_class)
+
+        # models
         registry = {}
         for m, a in admin.site._registry.items():
             if issubclass(a.__class__, self.objects_admin_class):
