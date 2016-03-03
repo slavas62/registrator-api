@@ -19,9 +19,9 @@ class ModelDefinitionAdminBuilder(object):
     def build(self):
         # fields
         for field_type_name, field_type_admin_class in FIELD_TYPES_ADMIN_CLASS.items():
-            field_type = dict(FIELD_TYPES).get(field_type_name)
-            field_type._meta.app_label = 'mutant'
-            admin.site.register(field_type, field_type_admin_class)
+            field_type = dict(FIELD_TYPES).get(field_type_name, None)
+            if field_type:
+                admin.site.register(field_type, field_type_admin_class)
 
         # models
         registry = {}
