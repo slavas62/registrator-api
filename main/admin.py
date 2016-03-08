@@ -80,21 +80,24 @@ class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
                 return dst.replace(settings.MEDIA_ROOT, '')
 
         for f in self.model._meta.get_all_related_objects(local_only=True):
-            attrs = {
-                'name': f.field.rel.related_name,
-                'upload_to': os.path.join(InlineForm.upload_to, getattr(
-                    settings, 'RESOURCE_FOLDER_%s_IN_MEDIA_ROOT' % f.field.rel.related_name.upper()))
-            }
-            if 'image' in f.field.rel.related_name:
-                attrs['file_field_class'] = forms.ImageField
-            formclass = type('{0}InlineForm'.format(f.field.rel.related_name), (InlineForm,), attrs)
-            attrs = {
-                'model': f.model,
-                'extra': 0,
-                'suit_classes': 'suit-tab suit-tab-%s' % f.field.rel.related_name,
-                'form': formclass
-            }
-            adminclass = type('{0}InlineAdmin'.format(f.field.rel.related_name), (TabularInline,), attrs)
-            self.inlines.append(adminclass)
+            try:
+                attrs = {
+                    'name': f.field.rel.related_name,
+                    'upload_to': os.path.join(InlineForm.upload_to, getattr(
+                        settings, 'RESOURCE_FOLDER_%s_IN_MEDIA_ROOT' % f.field.rel.related_name.upper()))
+                }
+                if 'image' in f.field.rel.related_name:
+                    attrs['file_field_class'] = forms.ImageField
+                formclass = type('{0}InlineForm'.format(f.field.rel.related_name), (InlineForm,), attrs)
+                attrs = {
+                    'model': f.model,
+                    'extra': 0,
+                    'suit_classes': 'suit-tab suit-tab-%s' % f.field.rel.related_name,
+                    'form': formclass
+                }
+                adminclass = type('{0}InlineAdmin'.format(f.field.rel.related_name), (TabularInline,), attrs)
+                self.inlines.append(adminclass)
+            except:
+                pass
 
         return super(MainModelDefinitionObjectAdmin, self).get_inline_instances(request, obj)
