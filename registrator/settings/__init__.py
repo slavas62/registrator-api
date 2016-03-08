@@ -127,6 +127,7 @@ SUIT_CONFIG = {
     'SHOW_REQUIRED_ASTERISK': True,
     'MENU': [
         {'label': u'Пользователи', 'icon': 'icon-user', 'models': ('auth.user', 'auth.group')},
+        {'label': u'Серверы', 'icon': 'icon-shopping-cart', 'models': ('main.server',)},
         {'label': u'Объекты', 'icon': 'icon-hdd', 'app': 'objects'},
         {'label': u'Модели', 'icon': 'icon-book', 'app': 'main'},
         {'label': u'Поля', 'icon': 'icon-list', 'app': 'mutant'},
@@ -142,10 +143,12 @@ RESOURCE_FOLDER_IMAGES_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROO
 THUMBNAIL_PREFIX = os.path.join(RESOURCE_FOLDER_IMAGES_IN_MEDIA_ROOT, 'cache/')
 RESOURCE_FOLDER_VIDEOS_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'video')
 RESOURCE_IMAGE_THUMBNAILS = [
+    {'name': '100x100', 'geometry_string': '100x100', 'upscale': True},
     {'name': '200x200', 'geometry_string': '200x200', 'upscale': True},
     {'name': '600', 'geometry_string': '600'},
 ]
 ICON_FOLDER_IN_MEDIA_ROOT = os.path.join(RESOURCE_FOLDER_IN_MEDIA_ROOT, 'icon')
+ICON_SERVER_FOLDER_IN_MEDIA_ROOT = os.path.join(ICON_FOLDER_IN_MEDIA_ROOT, 'server')
 THUMBNAIL_UPSCALE = False
 THUMBNAIL_QUALITY = 100
 
