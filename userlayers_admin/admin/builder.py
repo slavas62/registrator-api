@@ -40,7 +40,10 @@ class ModelDefinitionAdminBuilder(object):
             except:
                 errs.append(o)
         for o in errs:
-            self._build_one(o)
+            try:
+                self._build_one(o)
+            except:
+                pass
 
     def _build_one(self, o):
         c = o.model_class()
