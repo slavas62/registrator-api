@@ -10,8 +10,6 @@ from main.views import TokenGetView
 
 admin.autodiscover()
 
-
-
 urlpatterns = [
     url('^$', RedirectView.as_view(url='/secret_admin_zone', permanent=False)),
     url(r'^get-token/$', TokenGetView.as_view(), name='token-get'),

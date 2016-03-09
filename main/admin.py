@@ -4,13 +4,16 @@ from django import forms
 from django.conf import settings
 from django.core.files.base import File
 from django.db import models
+from django.contrib import admin
 
 from django.contrib.admin import TabularInline
 from sorl.thumbnail.admin.current import AdminImageWidget
+
 from userlayers import get_modeldefinition_model
 from userlayers_admin.admin.modeldefinition import ModelDefinitionAdmin, ModelDefinitionFormAdmin
 from userlayers_admin.admin.object import ModelDefinitionObjectAdmin
 from main.contrib.helper import generate_filename
+from main.models import Server
 
 ModelDef = get_modeldefinition_model()
 
@@ -42,6 +45,7 @@ class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
 
     def user_id(self, obj):
         return obj.user.id
+
     user_id.short_description = u'Пользователь'
 
     def get_inline_instances(self, request, obj=None):
@@ -80,21 +84,30 @@ class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
                 return dst.replace(settings.MEDIA_ROOT, '')
 
         for f in self.model._meta.get_all_related_objects(local_only=True):
-            attrs = {
-                'name': f.field.rel.related_name,
-                'upload_to': os.path.join(InlineForm.upload_to, getattr(
-                    settings, 'RESOURCE_FOLDER_%s_IN_MEDIA_ROOT' % f.field.rel.related_name.upper()))
-            }
-            if 'image' in f.field.rel.related_name:
-                attrs['file_field_class'] = forms.ImageField
-            formclass = type('{0}InlineForm'.format(f.field.rel.related_name), (InlineForm,), attrs)
-            attrs = {
-                'model': f.model,
-                'extra': 0,
-                'suit_classes': 'suit-tab suit-tab-%s' % f.field.rel.related_name,
-                'form': formclass
-            }
-            adminclass = type('{0}InlineAdmin'.format(f.field.rel.related_name), (TabularInline,), attrs)
-            self.inlines.append(adminclass)
+            try:
+                attrs = {
+                    'name': f.field.rel.related_name,
+                    'upload_to': os.path.join(InlineForm.upload_to, getattr(
+                        settings, 'RESOURCE_FOLDER_%s_IN_MEDIA_ROOT' % f.field.rel.related_name.upper()))
+                }
+                if 'image' in f.field.rel.related_name:
+                    attrs['file_field_class'] = forms.ImageField
+                formclass = type('{0}InlineForm'.format(f.field.rel.related_name), (InlineForm,), attrs)
+                attrs = {
+                    'model': f.model,
+                    'extra': 0,
+                    'suit_classes': 'suit-tab suit-tab-%s' % f.field.rel.related_name,
+                    'form': formclass
+                }
+                adminclass = type('{0}InlineAdmin'.format(f.field.rel.related_name), (TabularInline,), attrs)
+                self.inlines.append(adminclass)
+            except:
+                pass
 
         return super(MainModelDefinitionObjectAdmin, self).get_inline_instances(request, obj)
+
+
+class ServerAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Server, ServerAdmin)
