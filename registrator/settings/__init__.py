@@ -51,7 +51,6 @@ INSTALLED_APPS = APPS + [
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     'tastypie',
-    'djjsoneditor'
 ] + USERLAYERS_APPS
 
 ROOT_URLCONF = 'main.urls'
