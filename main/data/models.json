@@ -139,6 +139,16 @@
                     "verbose_name": "название"
                 }
             },
+            "fragment": {
+                "type": "foreign_key",
+                "args": {
+                    "model": "fragment_rkt",
+                    "null": true,
+                    "blank": true,
+                    "verbose_name": "внещний ключ на фрагмент РКТ"
+                },
+                "comment": "значение args[model] - ключ элемента первого уровня этого массива"
+            },
             "area": {
                 "type": "varchar",
                 "args": {
