@@ -4,7 +4,7 @@ from tastypie.resources import ModelResource
 from userlayers.api.auth import FullAccessForLoginedUsers, Authentication
 
 
-class CurrentUserResource(ModelResource):
+class UserResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
         authorization = FullAccessForLoginedUsers()
@@ -12,4 +12,7 @@ class CurrentUserResource(ModelResource):
         fields = ['id', 'email', 'first_name', 'last_name', 'username']
 
     def get_object_list(self, request):
-        return super(CurrentUserResource, self).get_object_list(request).filter(id=request.user.id)
+        qs = super(UserResource, self).get_object_list(request)
+        if not request.user.is_superuser:
+            return qs.filter(id=request.user.id)
+        return qs
