@@ -153,10 +153,10 @@ THUMBNAIL_QUALITY = 100
 
 USERLAYERS_MD_PERMISSION_STRATEGY = 2
 USERLAYERS_MD_MODEL = 'main.MainModelDef'
-# USERLAYERS_MD_CLASS_RESERVED_NAMES = ['image', 'video']
 USERLAYERS_ADMIN_MD_CLASS = 'main.admin.MainModelDefinitionAdmin'
 USERLAYERS_ADMIN_MD_OBJECT_CLASS = 'main.admin.MainModelDefinitionObjectAdmin'
 USERLAYERS_API_TABLE_EXCLUDE_FIELDS = ['user_id', 'user']
+USERLAYERS_API_TABLE_SHOW_RELATED_FIELDS = ['images', 'videos']
 
 DATABASES = {'default': dj_database_url.config(default='postgres://')}
 
