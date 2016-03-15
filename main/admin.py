@@ -7,13 +7,14 @@ from django.db import models
 from django.contrib import admin
 
 from django.contrib.admin import TabularInline
+from django.forms.forms import NON_FIELD_ERRORS
 from sorl.thumbnail.admin.current import AdminImageWidget
 
 from userlayers import get_modeldefinition_model
 from userlayers_admin.admin.modeldefinition import ModelDefinitionAdmin, ModelDefinitionFormAdmin
 from userlayers_admin.admin.object import ModelDefinitionObjectAdmin
 from main.contrib.helper import generate_filename
-from main.models import Server
+from main.models import Server, ServerException
 
 ModelDef = get_modeldefinition_model()
 
@@ -108,6 +109,18 @@ class MainModelDefinitionObjectAdmin(ModelDefinitionObjectAdmin):
 
 
 class ServerAdmin(admin.ModelAdmin):
-    pass
+    class Form(forms.ModelForm):
+        model = Server
+
+        def is_valid(self):
+            sup = super(ServerAdmin.Form, self).is_valid()
+            exists = self.model.objects.first()
+            if exists and exists.id != self.instance.id:
+                self._errors[NON_FIELD_ERRORS] = u'Может быть только один сервер'
+                return False
+            return sup
+
+    form = Form
+
 
 admin.site.register(Server, ServerAdmin)

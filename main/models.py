@@ -49,6 +49,10 @@ class MainModelDef(ModelDef):
         return self.name
 
 
+class ServerException(Exception):
+    pass
+
+
 class Server(Model):
     upload_to = settings.ICON_SERVER_FOLDER_IN_MEDIA_ROOT
 
@@ -64,3 +68,9 @@ class Server(Model):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        exists = self._meta.model.objects.first()
+        if exists and exists.id != self.id:
+            raise ServerException(u'Может быть только один')
+        return super(Server, self).save(*args, **kwargs)
