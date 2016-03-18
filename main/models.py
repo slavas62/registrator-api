@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.db.models import ImageField, BooleanField, PositiveSmallIntegerField
+from django.db.models import ImageField, BooleanField, PositiveSmallIntegerField, Model, CharField, TextField
 from userlayers.models import ModelDef, ModelDefManager
 from main.contrib.helper import upload_to_generate_filename
 
@@ -47,3 +47,30 @@ class MainModelDef(ModelDef):
 
     def __unicode__(self):
         return self.name
+
+
+class ServerException(Exception):
+    pass
+
+
+class Server(Model):
+    upload_to = settings.ICON_SERVER_FOLDER_IN_MEDIA_ROOT
+
+    name = CharField(max_length=500, verbose_name=u'название')
+    description = TextField(null=True, blank=True, verbose_name=u'описание')
+    icon = ImageField(upload_to=upload_to_generate_filename, null=True, blank=True, verbose_name=u'изображение')
+
+    class Meta:
+        app_label = 'main'
+        db_table = 'main_server'
+        verbose_name = u'сервер'
+        verbose_name_plural = u'серверы'
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        exists = self._meta.model.objects.first()
+        if exists and exists.id != self.id:
+            raise ServerException(u'Может быть только один')
+        return super(Server, self).save(*args, **kwargs)

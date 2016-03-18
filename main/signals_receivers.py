@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.dispatch import receiver
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, post_delete
 from mutant.contrib.file.models import FilePathFieldDefinition
 from mutant.contrib.related.models import ForeignKeyDefinition
 from userlayers import get_modeldefinition_model
@@ -37,3 +37,13 @@ def post_change(*args, **kwargs):
             FilePathFieldDefinition(
                 name='file', model_def_id=inline.contenttype_ptr_id, path=settings.MEDIA_ROOT, recursive=True,
                 verbose_name=u'файл').save()
+
+
+@receiver(post_delete, sender=MD, dispatch_uid='registreator')
+def post_delete(instance, *args, **kwargs):
+    for inline in ModelDef.objects.filter(
+            hidden=True,
+            name__icontains='for_%s' % instance.name,
+            resource_type__in=dict(ModelDef.RESOURCE_TYPE_CHOICES).keys()
+    ):
+        inline.delete()

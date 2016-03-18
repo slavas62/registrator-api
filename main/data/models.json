@@ -76,6 +76,52 @@
                     "blank": false,
                     "verbose_name": "идентификация фрагмента"
                 }
+            },
+            "choiceit": {
+                "type": "varchar",
+                "args": {
+                    "max_length": 500,
+                    "null": false,
+                    "blank": false,
+                    "verbose_name": "выбери себе",
+                    "choices": [
+                        {
+                            "group": "Выборка 1",
+                            "label": "Значек 1.1",
+                            "value": "1.1"
+                        },
+                        {
+                            "group": "Выборка 1",
+                            "label": "Значек 1.2",
+                            "value": "1.2"
+                        },
+                        {
+                            "group": "Выборка 1",
+                            "label": "Значек 1.3",
+                            "value": "1.3"
+                        },
+                        {
+                            "group": "Выборка 2",
+                            "label": "Значек 2.1",
+                            "value": "2.1"
+                        },
+                        {
+                            "group": "Выборка 2",
+                            "label": "Значек 2.2",
+                            "value": "2.2"
+                        },
+                        {
+                            "group": "Выборка 2",
+                            "label": "Значек 2.3",
+                            "value": "2.3"
+                        },
+                        {
+                            "group": "Выборка 3",
+                            "label": "Значек 3.1",
+                            "value": "3.1"
+                        }
+                    ]
+                }
             }
         }
     },
@@ -92,6 +138,16 @@
                     "blank": false,
                     "verbose_name": "название"
                 }
+            },
+            "fragment": {
+                "type": "foreign_key",
+                "args": {
+                    "model": "fragment_rkt",
+                    "null": true,
+                    "blank": true,
+                    "verbose_name": "внещний ключ на фрагмент РКТ"
+                },
+                "comment": "значение args[model] - ключ элемента первого уровня этого массива"
             },
             "area": {
                 "type": "varchar",

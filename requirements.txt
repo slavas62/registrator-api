@@ -1,10 +1,11 @@
+pip==8.1.0
+setuptools==18.2
 GDAL==1.10.0
 psycopg2==2.6.1
 colorlog
 ordered-set
-#https://github.com/charettes/django-mutant/archive/migrations.zip
-hg+ssh://hg@bitbucket.org/winsent/userlayers@dcc6fc5#egg=userlayers
-#hg+ssh://hg@bitbucket.org/atlantij/userlayers/
+hg+ssh://hg@bitbucket.org/lighter/shape-utils@e0b5af9#egg=shapeutils-0.0.1
+hg+ssh://hg@bitbucket.org/winsent/userlayers@march2016#egg=userlayers
 django-debug-toolbar==1.3.2
 django-extensions==1.5.5
 django-suit==0.2.14
@@ -13,4 +14,3 @@ django==1.6.9
 gunicorn
 Pillow==2.9.0
 dj-database-url==0.3.0
-
