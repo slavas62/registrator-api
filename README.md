@@ -49,7 +49,7 @@ docker build -t registrator-api .
 ```
 #!bash
 
-docker run --name registrator-api -d -p 8008:80 --link postgres:db -e DATABASE_URL=postgis://postgres:ololo@db/registrator winsent/registrator-api
+docker run --name registrator-api -d -p 8008:80 -v /data/registrator/media:/env/www/media --link postgres:db -e DATABASE_URL=postgis://postgres:ololo@db/registrator winsent/registrator-api
 
 ```
 
