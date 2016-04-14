@@ -5,7 +5,7 @@ psycopg2==2.6.1
 colorlog
 ordered-set
 hg+ssh://hg@bitbucket.org/lighter/shape-utils@e0b5af9#egg=shapeutils-0.0.1
-hg+ssh://hg@bitbucket.org/winsent/userlayers@april16#egg=userlayers
+hg+ssh://hg@bitbucket.org/winsent/userlayers@0345868#egg=userlayers
 django-debug-toolbar==1.3.2
 django-extensions==1.5.5
 django-suit==0.2.14
