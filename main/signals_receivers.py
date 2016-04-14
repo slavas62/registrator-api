@@ -28,7 +28,7 @@ def post_change(*args, **kwargs):
             to_id=ContentType.objects.get_for_model(get_user_model()).id,
             verbose_name=u'владелец').save()
         BooleanFieldDefinition(
-            name='is_onmap', model_def_id=instance.contenttype_ptr_id, verbose_name=u'помещен на карту').save()
+            name='is_onmap', model_def_id=instance.contenttype_ptr_id, default=False verbose_name=u'помещен на карту').save()
         for name, data in wow.items():
             inline = ModelDef(
                 name='%ss_for_%s' % (name, instance.name), owner=instance.owner, resource_type=data['type'],
