@@ -46,7 +46,7 @@ INSTALLED_APPS = APPS + [
     'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.auth',
-    'django.contrib.sessions',, 'created'
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
