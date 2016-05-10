@@ -51,6 +51,7 @@ INSTALLED_APPS = APPS + [
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     'tastypie',
+    'registrator.contrib.fix_exif',
 ] + USERLAYERS_APPS
 
 ROOT_URLCONF = 'main.urls'
