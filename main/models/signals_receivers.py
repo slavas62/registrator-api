@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from mutant.contrib.file.models import FilePathFieldDefinition
 from mutant.contrib.related.models import ForeignKeyDefinition
+from mutant.contrib.boolean.models import BooleanFieldDefinition
 from userlayers import get_modeldefinition_model
 from userlayers.models import ModelDef as MD
 
@@ -26,6 +27,8 @@ def post_change(*args, **kwargs):
             name='user', model_def_id=instance.contenttype_ptr_id, related_name='%ss' % instance.name,
             to_id=ContentType.objects.get_for_model(get_user_model()).id,
             verbose_name=u'владелец').save()
+        BooleanFieldDefinition(
+            name='is_onmap', model_def_id=instance.contenttype_ptr_id, default=False, verbose_name=u'помещен на карту').save()
         for name, data in wow.items():
             inline = ModelDef(
                 name='%ss_for_%s' % (name, instance.name), owner=instance.owner, resource_type=data['type'],
