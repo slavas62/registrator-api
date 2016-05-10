@@ -74,3 +74,7 @@ class Server(Model):
         if exists and exists.id != self.id:
             raise ServerException(u'Может быть только один')
         return super(Server, self).save(*args, **kwargs)
+
+
+from main.models.objects_monkey import *
+from main.models.signals_receivers import *
