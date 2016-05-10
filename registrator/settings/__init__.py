@@ -51,6 +51,7 @@ INSTALLED_APPS = APPS + [
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     'tastypie',
+    'registrator.contrib.fix_exif',
 ] + USERLAYERS_APPS
 
 ROOT_URLCONF = 'main.urls'
@@ -155,7 +156,7 @@ USERLAYERS_MD_PERMISSION_STRATEGY = 2
 USERLAYERS_MD_MODEL = 'main.MainModelDef'
 USERLAYERS_ADMIN_MD_CLASS = 'main.admin.MainModelDefinitionAdmin'
 USERLAYERS_ADMIN_MD_OBJECT_CLASS = 'main.admin.MainModelDefinitionObjectAdmin'
-USERLAYERS_API_TABLE_EXCLUDE_FIELDS = ['user_id', 'user']
+USERLAYERS_API_TABLE_EXCLUDE_FIELDS = ['user_id', 'user', 'is_onmap', 'created','edited']
 USERLAYERS_API_TABLE_SHOW_RELATED_FIELDS = ['images', 'videos']
 
 DATABASES = {'default': dj_database_url.config(default='postgres://')}
