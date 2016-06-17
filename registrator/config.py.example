@@ -1,8 +1,6 @@
 # coding: utf-8
 from settings import *
 
-sys.path.append('/path/to/userlayers/userlayers/')
-
 DEBUG = True
 DEBUG_SQL = True
 
