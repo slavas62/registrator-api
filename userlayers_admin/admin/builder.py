@@ -92,8 +92,12 @@ class ModelDefinitionAdminBuilder(object):
                 None,
                 {
                     'classes': ['suit-tab', 'suit-tab-general'],
-                    'fields': [f.name for f in o.fielddefinitions.select_subclasses().order_by('pk')
-                               if f.editable and not hasattr(f, 'auto_now_add') or not f.auto_now_add]
+                    'fields': [
+                        f.name for f in o.fielddefinitions.select_subclasses().order_by('pk')
+                        if (
+                            f.editable and
+                            (not hasattr(f, 'auto_now_add') or not f.auto_now_add) and
+                            (not hasattr(f, 'auto_now') or not f.auto_now))]
                 }
             ]]
 
