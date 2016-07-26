@@ -33,10 +33,10 @@ CREATE EXTENSION postgis;
 
 ```
 
-**Build and run registrator API.**
+**Build and run registrator API**
 
 
-*Build image.*
+*Build image*
 
 ```
 #!bash
@@ -45,7 +45,7 @@ CREATE EXTENSION postgis;
 docker build -t registrator-api .
 ```
 
-*Run container.*
+*Run container*
 ```
 #!bash
 
