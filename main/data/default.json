@@ -1,0 +1,476 @@
+{
+  "incident": {
+    "owner_id": 1,
+    "verbose_name": "Происшествие",
+    "verbose_name_plural": "Происшествия и ЧС",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Название"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "Описание"
+        }
+      },
+      "type": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Тип",
+          "default": "other",
+          "choices": [
+            {
+              "label": "Транспортная авария",
+              "value": "transport"
+            },
+            {
+              "label": "Пожар",
+              "value": "fire"
+            },
+            {
+              "label": "Взрыв",
+              "value": "explosion"
+            },
+            {
+              "label": "Авария с выбросом опасных веществ",
+              "value": "hazard"
+            },
+            {
+              "label": "Авария в системе жизнеобеспечения",
+              "value": "accident"
+            },
+            {
+              "label": "Природное опасное явление",
+              "value": "natural"
+            },
+            {
+              "label": "Экологическая авария",
+              "value": "ecology"
+            },
+            {
+              "label": "Эпидемия",
+              "value": "epidemic"
+            },
+            {
+              "label": "Конфликты, беспорядки, террор",
+              "value": "terror"
+            },
+            {
+              "label": "Прочее",
+              "value": "other"
+            }
+          ]
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "depart_time": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "дата выезда"
+        }
+      },
+      "elimitation_time": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "дата ликвидации"
+        }
+      },
+      "status": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "default": "undefine",
+          "verbose_name": "Тип",
+          "choices": [
+            {
+              "label": "Активно",
+              "value": "active"
+            },
+            {
+              "label": "Ликвидировано",
+              "value": "liquidate"
+            },
+            {
+              "label": "Ложное",
+              "value": "fake"
+            },
+            {
+              "label": "Не определено",
+              "value": "undefine"
+            }
+          ]
+        }
+      },
+      "geometry": {
+        "type": "point",
+        "args": {
+          "null": false,
+          "blank": false,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "Местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      }
+    }
+  },
+  "message": {
+    "owner_id": 1,
+    "verbose_name": "Сообщение",
+    "verbose_name_plural": "Сообщение о проишествии",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Название"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "Описание"
+        }
+      },
+      "type": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Тип",
+          "choices": [
+            {
+              "label": "Важное",
+              "value": "important"
+            },
+            {
+              "label": "Информационное",
+              "value": "info"
+            }
+          ]
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "geometry": {
+        "type": "point",
+        "args": {
+          "null": false,
+          "blank": false,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "Местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      }
+    }
+  },
+  "monitor": {
+    "owner_id": 1,
+    "verbose_name": "Мониторинг",
+    "verbose_name_plural": "Мониторинг",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Название"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "Описание"
+        }
+      },
+      "type": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Тип",
+          "default": "other",
+          "choices": [
+            {
+              "label": "Экология",
+              "value": "ecology"
+            },
+            {
+              "label": "Сельское хозяйство",
+              "value": "agriculture"
+            },
+            {
+              "label": "Лесное хозяйство",
+              "value": "forestry"
+            },
+            {
+              "label": "Водные ресурсы",
+              "value": "water"
+            },
+            {
+              "label": "Дорожное хозяйство",
+              "value": "road"
+            },
+            {
+              "label": "Прочее",
+              "value": "other"
+            }
+          ]
+        }
+      },
+      "monitoring": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "default": "object",
+          "verbose_name": "Предмет мониторинга",
+          "choices": [
+            {
+              "label": "Территория",
+              "value": "territory"
+            },
+            {
+              "label": "Объект",
+              "value": "object"
+            },
+            {
+              "label": "Явление",
+              "value": "fakt"
+            },
+            {
+              "label": "Процесс",
+              "value": "process"
+            }
+          ]
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "geometry": {
+        "type": "point",
+        "args": {
+          "null": false,
+          "blank": false,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "Местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      }
+    }
+  },
+  "presentation": {
+    "owner_id": 1,
+    "verbose_name": "Мониторинг",
+    "verbose_name_plural": "Мониторинг",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Название"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "Описание"
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "geometry": {
+        "type": "point",
+        "args": {
+          "null": false,
+          "blank": false,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "Местоположение"
+        }
+      }
+    }
+  },
+  "event": {
+    "owner_id": 1,
+    "verbose_name": "Событие",
+    "verbose_name_plural": "Событие",
+    "fields": {
+      "name": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Название"
+        }
+      },
+      "comment": {
+        "type": "text",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "Описание"
+        }
+      },
+      "type": {
+        "type": "varchar",
+        "args": {
+          "max_length": 500,
+          "null": false,
+          "blank": false,
+          "verbose_name": "Тема",
+          "default": "other",
+          "choices": [
+            {
+              "label": "Праздник",
+              "value": "celebration"
+            },
+            {
+              "label": "Форум",
+              "value": "forum"
+            },
+            {
+              "label": "Встреча",
+              "value": "meet"
+            },
+            {
+              "label": "Поездка",
+              "value": "trip"
+            },
+            {
+              "label": "Прочее",
+              "value": "other"
+            }
+          ]
+        }
+      },
+      "begin": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "verbose_name": "Дата начала"
+        }
+      },
+      "created": {
+        "type": "datetime",
+        "args": {
+          "null": true,
+          "blank": true,
+          "auto_now_add": true,
+          "verbose_name": "дата создания"
+        }
+      },
+      "geometry": {
+        "type": "point",
+        "args": {
+          "null": false,
+          "blank": false,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "Местоположение"
+        }
+      },
+      "track": {
+        "type": "line_string",
+        "args": {
+          "null": true,
+          "blank": true,
+          "srid": 4326,
+          "geography": true,
+          "verbose_name": "трек"
+        }
+      }
+    }
+  }
+}
