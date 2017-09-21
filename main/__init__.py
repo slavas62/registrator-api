@@ -7,3 +7,7 @@ signals.post_save.connect(create_api_key, sender=get_user_model())
 
 import main.api
 import main.admin_user
+
+from registrator.MONKEY import apply_monkey
+
+apply_monkey()
