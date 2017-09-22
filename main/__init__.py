@@ -10,4 +10,4 @@ import main.admin_user
 
 from registrator.MONKEY import apply_monkey
 
-apply_monkey()
+# apply_monkey()
