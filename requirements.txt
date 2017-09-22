@@ -12,5 +12,6 @@ django-suit==0.2.14
 sorl-thumbnail==12.3
 django==1.6.9
 gunicorn==19.4.5
+sqlparse==0.1.19
 Pillow==2.9.0
 dj-database-url==0.3.0
