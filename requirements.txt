@@ -20,7 +20,6 @@ django-suit==0.2.14
 django-tastypie==0.12.2
 GDAL==1.10.0
 gunicorn==19.7.1
-shapeutils==0.0.1
 sorl-thumbnail==12.3
 South==1.0.2
 sqlparse==0.1.19
