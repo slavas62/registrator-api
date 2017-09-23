@@ -60,3 +60,20 @@ docker run --name registrator-api -d -p 8008:80 -v /data/registrator/media:/env/
 ssh-keygen -y -f docker/id_rsa
 
 ```
+
+# Filtering
+
+Show objects with `is_onmap=True` 
+```
+http://registrator.serv.icdo.org/userlayers/api/v1/tablesdata/61/data/?is_onmap=True
+```
+
+Valid filtering values are: [Django ORM filters](https://docs.djangoproject.com/en/dev/ref/models/querysets/#field-lookups) (e.g. startswith, exact, lte, etc.) 
+```
+/userlayers/api/v1/myresource/?slug=myslug
+/userlayers/api/v1/myresource/?slug__startswith=test
+```
+We can filter using any standard GeoDjango [spatial lookup](https://docs.djangoproject.com/en/dev/ref/contrib/gis/geoquerysets/#spatial-lookups) filter.
+```
+/userlayers/api/v1/myresource/?polys__contains={"type": "Point", "coordinates": [-122.475233, 37.768617]}
+```
