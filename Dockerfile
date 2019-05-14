@@ -28,12 +28,11 @@ WORKDIR ${work_dir}
 
 RUN virtualenv /env
 
-RUN /env/bin/pip install -I -U gunicorn==19.7.1 pip setuptools
-
 COPY ./requirements.txt requirements.txt
 
 RUN CPLUS_INCLUDE_PATH=/usr/include/gdal C_INCLUDE_PATH=/usr/include/gdal \
-  /env/bin/pip install --process-dependency-links --allow-all-external -r requirements.txt
+  /env/bin/pip install --process-dependency-links --allow-all-external -r requirements.txt && \ 
+  /env/bin/pip install hg+ssh://hg@bitbucket.org/winsent/userlayers@0345868#egg=userlayers
 
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./docker/nginx.conf /etc/nginx/conf.d/default.conf
