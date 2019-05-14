@@ -7,7 +7,6 @@ python-dateutil==2.6.1
 python-mimeparse==1.6.0
 Django==1.6.9
 hg+ssh://hg@bitbucket.org/lighter/shape-utils@e0b5af9#egg=shapeutils-0.0.1
-hg+ssh://hg@bitbucket.org/winsent/userlayers@0345868#egg=userlayers
 cchardet==2.1.1
 colorlog==3.1.0
 dj-database-url==0.3.0
