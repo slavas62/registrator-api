@@ -28,8 +28,6 @@ WORKDIR ${work_dir}
 
 RUN virtualenv /env
 
-RUN /env/bin/pip install -I -U gunicorn==19.7.1 pip setuptools
-
 COPY ./requirements.txt requirements.txt
 
 RUN CPLUS_INCLUDE_PATH=/usr/include/gdal C_INCLUDE_PATH=/usr/include/gdal \
