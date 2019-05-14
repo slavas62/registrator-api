@@ -28,7 +28,7 @@ WORKDIR ${work_dir}
 
 RUN virtualenv /env
 
-RUN /env/bin/pip install -I -U gunicorn pip setuptools
+RUN /env/bin/pip install -I -U gunicorn==19.7.1 pip setuptools
 
 COPY ./requirements.txt requirements.txt
 
