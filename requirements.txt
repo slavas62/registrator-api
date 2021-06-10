@@ -5,7 +5,7 @@ Pillow==2.9.0
 psycopg2==2.7.3.1
 python-dateutil==2.6.1
 python-mimeparse==1.6.0
-Django==1.6.9
+Django==2.2.24
 hg+ssh://hg@bitbucket.org/lighter/shape-utils@e0b5af9#egg=shapeutils-0.0.1
 cchardet==2.1.1
 colorlog==3.1.0
